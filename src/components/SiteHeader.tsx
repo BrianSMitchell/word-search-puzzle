@@ -1,0 +1,25 @@
+"use client";
+
+import Link from "next/link";
+import { ThemeControls } from "./ThemeControls";
+import styles from "./SiteHeader.module.css";
+
+export function SiteHeader() {
+  return (
+    <header className={styles.header}>
+      <div className="container">
+        <div className={styles.inner}>
+          <Link className={styles.logo} href="/">
+            Word Search Puzzle
+          </Link>
+          <nav className={styles.nav} aria-label="Primary">
+            <Link href="/daily-word-search">Daily Word Search</Link>
+            <Link href="/word-search-generator">Word Search Generator</Link>
+            <Link href="/printable-word-search">Printable Puzzles</Link>
+          </nav>
+          <ThemeControls />
+        </div>
+      </div>
+    </header>
+  );
+}

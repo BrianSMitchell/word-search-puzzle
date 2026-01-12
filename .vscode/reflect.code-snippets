@@ -1,0 +1,27 @@
+{
+  "Reflect Quick Entry (memory-bank)": {
+    "scope": "markdown",
+    "prefix": "reflect",
+    "description": "Insert a quick, structured reflection entry for raw_reflection_log.md",
+    "body": [
+      "---",
+      "Date: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "TaskRef: \"${1:Short title}\"",
+      "",
+      "Quick:",
+      "- Learning: ${2:…}",
+      "- Difficulty: ${3:…}",
+      "- Success: ${4:…}",
+      "${5:Tags: [${6|ops,ui,backend,testing,perf,docs|}]}",
+      "---"
+    ]
+  },
+  "Reflect One-liner (memory-bank)": {
+    "scope": "markdown",
+    "prefix": "reflect-one",
+    "description": "Insert a one-liner reflection",
+    "body": [
+      "- [${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}] ${1:Short title} — L: ${2:…} | D: ${3:…} | S: ${4:…} ${5:#tag}"
+    ]
+  }
+}

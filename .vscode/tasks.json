@@ -1,0 +1,73 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "taskRef",
+      "type": "promptString",
+      "description": "TaskRef (short title)"
+    },
+    {
+      "id": "learning",
+      "type": "promptString",
+      "description": "Learning"
+    },
+    {
+      "id": "difficulty",
+      "type": "promptString",
+      "description": "Difficulty"
+    },
+    {
+      "id": "success",
+      "type": "promptString",
+      "description": "Success"
+    },
+    {
+      "id": "tags",
+      "type": "promptString",
+      "description": "Tags (comma-separated, optional)",
+      "default": ""
+    }
+  ],
+  "tasks": [
+    {
+      "label": "Reflect: Quick Entry",
+      "type": "shell",
+      "command": "pnpm",
+      "args": [
+        "run",
+        "reflect:quick",
+        "-r",
+        "${input:taskRef}",
+        "-l",
+        "${input:learning}",
+        "-d",
+        "${input:difficulty}",
+        "-s",
+        "${input:success}",
+        "-t",
+        "${input:tags}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Reflect: One-liner",
+      "type": "shell",
+      "command": "pnpm",
+      "args": [
+        "run",
+        "reflect:one",
+        "-r",
+        "${input:taskRef}",
+        "-l",
+        "${input:learning}",
+        "-d",
+        "${input:difficulty}",
+        "-s",
+        "${input:success}",
+        "-t",
+        "${input:tags}"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

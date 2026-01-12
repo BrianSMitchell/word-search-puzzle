@@ -1,0 +1,64 @@
+.printable {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.header h2 {
+  font-family: var(--font-display);
+  margin-bottom: 0.4rem;
+}
+
+.header p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.grid {
+  display: grid;
+  gap: 0.25rem;
+  margin: 1.25rem 0;
+  border: 2px solid var(--border-strong);
+  padding: 0.75rem;
+  background: #ffffff;
+}
+
+.cell {
+  border: 1px solid var(--border);
+  min-width: 2rem;
+  min-height: 2rem;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  color: #111111;
+}
+
+.wordList h3 {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.wordList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.35rem 1rem;
+}
+
+@media print {
+  .printable {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+
+  .header p {
+    color: #111111;
+  }
+}
