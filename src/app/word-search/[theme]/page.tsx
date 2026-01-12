@@ -5,19 +5,20 @@ import { PuzzlePlayer } from "@/components/PuzzlePlayer";
 import { getThemeBySlug, getThemeSeed, getThemeSlugs } from "@/lib/puzzle/themes";
 
 type ThemePageProps = {
-  params: {
+  params: Promise<{
     theme: string;
-  };
+  }>;
 };
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 export function generateStaticParams() {
   return getThemeSlugs().map((theme) => ({ theme }));
 }
 
-export function generateMetadata({ params }: ThemePageProps): Metadata {
-  const theme = getThemeBySlug(params.theme);
+export async function generateMetadata({ params }: ThemePageProps): Promise<Metadata> {
+  const { theme: themeSlug } = await params;
+  const theme = getThemeBySlug(themeSlug);
   if (!theme) {
     return { title: "Themed Word Search Puzzle" };
   }
@@ -27,8 +28,9 @@ export function generateMetadata({ params }: ThemePageProps): Metadata {
   };
 }
 
-export default function ThemeWordSearchPage({ params }: ThemePageProps) {
-  const theme = getThemeBySlug(params.theme);
+export default async function ThemeWordSearchPage({ params }: ThemePageProps) {
+  const { theme: themeSlug } = await params;
+  const theme = getThemeBySlug(themeSlug);
   if (!theme) {
     notFound();
   }
