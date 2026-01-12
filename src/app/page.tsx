@@ -26,6 +26,10 @@ export default function HomePage() {
             across letters to find hidden words, track your progress, and finish a
             full puzzle in minutes.
           </p>
+          <p className="hero-links">
+            Play free word search puzzles online with no accounts, no downloads, and
+            a fresh puzzle every day.
+          </p>
           <div className="hero-actions">
             <Link className="button button-solid" href="/daily-word-search">
               Play the daily puzzle
@@ -40,7 +44,7 @@ export default function HomePage() {
           <p className="badge">No sign-up. Works entirely in your browser.</p>
           <p className="hero-links">
             Explore the <Link href="/daily-word-search">Daily Word Search</Link>, browse{" "}
-            <Link href="/word-search">Themed Word Searches</Link>, build a custom grid in
+            <Link href="/themed-word-search-puzzles">Themed Word Searches</Link>, build a custom grid in
             the <Link href="/word-search-generator">Word Search Generator</Link>, or grab
             a worksheet from{" "}
             <Link href="/printable-word-search">Printable Word Search Puzzles</Link>.

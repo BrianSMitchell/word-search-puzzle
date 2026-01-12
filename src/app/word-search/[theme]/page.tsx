@@ -54,7 +54,7 @@ export default async function ThemeWordSearchPage({ params }: ThemePageProps) {
             </Link>
           </div>
           <p className="hero-links">
-            Browse more <Link href="/word-search">themed word searches</Link> or try an{" "}
+            Browse more <Link href="/themed-word-search-puzzles">themed word searches</Link> or try an{" "}
             <Link href="/easy-word-search">easy word search puzzle</Link>.
           </p>
         </div>

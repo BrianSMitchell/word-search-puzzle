@@ -1,6 +1,9 @@
 # IN PROGRESS
 
-No active sprint.
+## Sprint: Themed SEO Expansion Build
+- [ ] Build the themed hub page at `/themed-word-search-puzzles`
+- [ ] Launch the first five theme pages (animals, kids, holidays, easy, large-print)
+- [ ] Validate internal links and update navigation/sitemap references
 
 # COMPLETED
 

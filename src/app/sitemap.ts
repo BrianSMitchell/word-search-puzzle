@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { siteUrl } from "@/lib/site";
 import { getRecentDateKeys } from "@/lib/puzzle/daily";
 import { THEMES } from "@/lib/puzzle/themes";
+import { THEMED_PAGES } from "@/lib/puzzle/themedPages";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl.replace(/\/$/, "");
@@ -9,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/daily-word-search",
     "/word-search",
+    "/themed-word-search-puzzles",
     "/easy-word-search",
     "/medium-word-search",
     "/hard-word-search",
@@ -21,8 +23,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: date,
   }));
 
-  const themeRoutes = THEMES.map((theme) => ({
+  const legacyThemeRoutes = THEMES.map((theme) => ({
     url: `${base}/word-search/${theme.slug}`,
+    lastModified: new Date(),
+  }));
+
+  const themedRoutes = THEMED_PAGES.map((theme) => ({
+    url: `${base}/themed-word-search-puzzles/${theme.slug}`,
     lastModified: new Date(),
   }));
 
@@ -32,6 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
     })),
     ...dailyRoutes,
-    ...themeRoutes,
+    ...themedRoutes,
+    ...legacyThemeRoutes,
   ];
 }

@@ -30,7 +30,7 @@ export default function HardWordSearchPage() {
             <Link className="button button-outline" href="/word-search-generator">
               Make your own puzzle
             </Link>
-            <Link className="button button-outline" href="/word-search">
+            <Link className="button button-outline" href="/themed-word-search-puzzles">
               Themed puzzles
             </Link>
           </div>

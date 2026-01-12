@@ -48,6 +48,19 @@ html[data-contrast="high"] {
   --board-border: var(--border-strong);
 }
 
+html[data-theme="dark"][data-contrast="high"] {
+  --text: #f8f6f4;
+  --muted: #cfd2d8;
+  --surface: #0a0b11;
+  --surface-raised: #11131a;
+  --border: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.3);
+  --board-border: rgba(255, 255, 255, 0.18);
+  --accent: #ffb347;
+  --accent-soft: rgba(255, 179, 71, 0.45);
+  --accent-contrast: #0a0b11;
+}
+
 *,
 *::before,
 *::after {
@@ -158,6 +171,25 @@ textarea {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+}
+
+.word-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.word-list-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.45rem 0.75rem;
+  background: var(--surface-raised);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-align: center;
 }
 
 .page-grid {

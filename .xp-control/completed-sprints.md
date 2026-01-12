@@ -14,3 +14,14 @@
 - Implemented client-side PDF export for printable puzzles.
 - Updated navigation, internal links, and sitemap entries for new pages.
 - Validation: `npm run lint`, `npm run build` (pass).
+
+## Sprint: Themed SEO Expansion Plan
+- Documented the tiered architecture, prioritized themes, standardized theme-template, and phased launch guidance for themed word search puzzles.
+- Captured internal linking strategy, growth expectations, what to avoid, and a recommended first five pages list.
+- Validation: Plan reviewed with the XP process; no automated tests required because the work is documentation-only.
+
+## Sprint: Themed SEO Expansion Build
+- Built the `/themed-word-search-puzzles` hub plus five new theme pages for animals, kids, holidays, easy, and large-print using the shared template (hero copy, puzzle, word lists, & secondary sections).
+- Updated navigation, footer, sitemap, and internal links to point at the new hub, and redirected the legacy `/word-search` route so the new architecture is canonical.
+- Added theme data/config helpers, the word list grid styles, and ensured the theme hub reuses the builder form before re-running lint.
+- Validation: `npm run lint` (pass).
