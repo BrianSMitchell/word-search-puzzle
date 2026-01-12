@@ -14,6 +14,7 @@ export function SiteHeader() {
           </Link>
           <nav className={styles.nav} aria-label="Primary">
             <Link href="/daily-word-search">Daily Word Search</Link>
+            <Link href="/word-search">Themed Puzzles</Link>
             <Link href="/word-search-generator">Word Search Generator</Link>
             <Link href="/printable-word-search">Printable Puzzles</Link>
           </nav>

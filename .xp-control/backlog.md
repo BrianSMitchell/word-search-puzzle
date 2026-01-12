@@ -1,8 +1,8 @@
 ﻿
 # Backlog
 
-## Phase 2 Expansion (Future)
-- [ ] Printable PDF export for word search puzzles
-- [ ] Themed word search categories (animals, holidays, bible, christmas)
-- [ ] Difficulty variants (easy, medium, hard)
+## Phase 3 Ideas (Future)
 - [ ] Help pages (how to play, how to make a word search puzzle)
+- [ ] Kids word search page with larger type and simpler words
+- [ ] Additional themes (animals, holidays, bible, christmas) expansion
+- [ ] Printable PDF upsells / branded worksheets

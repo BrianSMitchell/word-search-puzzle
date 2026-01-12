@@ -15,6 +15,7 @@ export function SiteFooter() {
           <nav className={styles.nav} aria-label="Footer">
             <Link href="/">Play Free Word Search</Link>
             <Link href="/daily-word-search">Daily Puzzle</Link>
+            <Link href="/word-search">Themed Puzzles</Link>
             <Link href="/word-search-generator">Make Your Own</Link>
             <Link href="/printable-word-search">Printable Puzzles</Link>
           </nav>

@@ -39,9 +39,10 @@ export default function HomePage() {
           </div>
           <p className="badge">No sign-up. Works entirely in your browser.</p>
           <p className="hero-links">
-            Explore the <Link href="/daily-word-search">Daily Word Search</Link>, build
-            a custom grid in the <Link href="/word-search-generator">Word Search Generator</Link>,
-            or grab a worksheet from{" "}
+            Explore the <Link href="/daily-word-search">Daily Word Search</Link>, browse{" "}
+            <Link href="/word-search">Themed Word Searches</Link>, build a custom grid in
+            the <Link href="/word-search-generator">Word Search Generator</Link>, or grab
+            a worksheet from{" "}
             <Link href="/printable-word-search">Printable Word Search Puzzles</Link>.
           </p>
           <p className="hero-links">

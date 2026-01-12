@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { AdSlot } from "@/components/AdSlot";
 import { PrintablePuzzle } from "@/components/PrintablePuzzle";
 import { PrintButton } from "@/components/PrintButton";
+import { PdfDownloadButton } from "@/components/PdfDownloadButton";
 import { generatePuzzle } from "@/lib/puzzle/generator";
 import { seedFromString } from "@/lib/puzzle/rng";
 import { PRINTABLE_WORDS } from "@/lib/puzzle/words";
@@ -37,6 +38,7 @@ export default function PrintableWordSearchPage() {
           </p>
           <div className="hero-actions">
             <PrintButton label="Print this puzzle" />
+            <PdfDownloadButton puzzle={puzzle} title="Printable Word Search Puzzle" />
             <Link className="button button-outline" href="/word-search-generator">
               Make your own puzzle
             </Link>

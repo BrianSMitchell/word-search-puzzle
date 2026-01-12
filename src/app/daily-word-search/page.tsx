@@ -48,9 +48,10 @@ export default function DailyWordSearchPage() {
           </div>
           <p className="hero-links">
             Play a free daily word search online with no sign-up or download. Try the{" "}
-            <Link href="/word-search-generator">Word Search Generator</Link> or{" "}
-            <Link href="/printable-word-search">Printable Word Search Puzzles</Link>
-            for custom and offline play.
+            <Link href="/word-search-generator">Word Search Generator</Link>, browse{" "}
+            <Link href="/word-search">Themed Word Searches</Link>, or grab{" "}
+            <Link href="/printable-word-search">Printable Word Search Puzzles</Link> for
+            custom and offline play.
           </p>
         </div>
         <div className="reveal reveal-delay-1">
