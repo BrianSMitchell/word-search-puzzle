@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { ThemeBuilderForm } from "@/components/ThemeBuilderForm";
 import { THEMES } from "@/lib/puzzle/themes";
 
 export const metadata: Metadata = {
@@ -62,6 +63,7 @@ export default function WordSearchThemesPage() {
           <Link href="/printable-word-search">Printable Word Search Puzzles</Link>.
         </p>
       </section>
+      <ThemeBuilderForm />
     </div>
   );
 }

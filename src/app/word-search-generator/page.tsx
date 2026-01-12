@@ -12,7 +12,18 @@ export const metadata: Metadata = {
 const inlineSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_INLINE ?? "";
 const sidebarSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR ?? "";
 
-export default function WordSearchGeneratorPage() {
+type WordSearchGeneratorPageProps = {
+  searchParams?: Promise<{
+    words?: string;
+    theme?: string;
+  }>;
+};
+
+export default async function WordSearchGeneratorPage({ searchParams }: WordSearchGeneratorPageProps) {
+  const params = await searchParams;
+  const wordsParam = params?.words ?? "";
+  const themeParam = params?.theme ?? "";
+
   return (
     <div className="page">
       <section className="hero">
@@ -34,7 +45,7 @@ export default function WordSearchGeneratorPage() {
           </div>
         </div>
         <div className="reveal reveal-delay-1">
-          <WordSearchGenerator />
+          <WordSearchGenerator initialWords={wordsParam} initialThemeName={themeParam} />
         </div>
       </section>
 

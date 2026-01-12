@@ -17,8 +17,17 @@ anchor`;
 
 const GRID_OPTIONS = [10, 12, 14, 16, 18];
 
-export function WordSearchGenerator() {
-  const [rawWords, setRawWords] = useState(DEFAULT_WORDS);
+type WordSearchGeneratorProps = {
+  initialWords?: string;
+  initialThemeName?: string;
+};
+
+export function WordSearchGenerator({
+  initialWords,
+  initialThemeName,
+}: WordSearchGeneratorProps) {
+  const startingWords = initialWords?.trim() ? initialWords.trim() : DEFAULT_WORDS;
+  const [rawWords, setRawWords] = useState(startingWords);
   const [gridSize, setGridSize] = useState(12);
   const [allowDiagonal, setAllowDiagonal] = useState(true);
   const [allowBackwards, setAllowBackwards] = useState(true);
@@ -55,6 +64,9 @@ export function WordSearchGenerator() {
   return (
     <div className="card">
       <div className="form-grid">
+        {initialThemeName?.trim() ? (
+          <p className="badge">Custom theme: {initialThemeName.trim()}</p>
+        ) : null}
         <div className="field">
           <label htmlFor="word-list">Word list (comma or new line separated)</label>
           <textarea
