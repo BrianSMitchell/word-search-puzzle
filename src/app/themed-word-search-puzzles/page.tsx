@@ -1,7 +1,7 @@
-import Link from "next/link";
-import type { Metadata } from "next";
 import { ThemeBuilderForm } from "@/components/ThemeBuilderForm";
-import { THEMED_PAGES } from "@/lib/puzzle/themedPages";
+import { THEMED_PAGES, ThemeCategory } from "@/lib/puzzle/themedPages";
+import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Themed Word Search Puzzles – Free & Printable Games",
@@ -9,63 +9,100 @@ export const metadata: Metadata = {
     "Choose a themed word search puzzle, play instantly, and print worksheets for classrooms or family time. Each theme is built to rank with clear copy and internal links.",
 };
 
+// Group themes by category with display info
+const CATEGORY_CONFIG: Record<ThemeCategory, { icon: string; label: string; order: number }> = {
+  education: { icon: "📚", label: "Education & Learning", order: 1 },
+  holiday: { icon: "🎉", label: "Holidays & Seasons", order: 2 },
+  animals: { icon: "🐾", label: "Animals & Nature", order: 3 },
+  nature: { icon: "🌿", label: "Nature & Outdoors", order: 4 },
+  lifestyle: { icon: "🍕", label: "Lifestyle & Fun", order: 5 },
+  audience: { icon: "👤", label: "For Specific Audiences", order: 6 },
+  difficulty: { icon: "🎯", label: "By Difficulty Level", order: 7 },
+};
+
+function groupThemesByCategory() {
+  const groups: Record<ThemeCategory, typeof THEMED_PAGES> = {
+    education: [],
+    holiday: [],
+    animals: [],
+    nature: [],
+    lifestyle: [],
+    audience: [],
+    difficulty: [],
+  };
+
+  for (const theme of THEMED_PAGES) {
+    groups[theme.category].push(theme);
+  }
+
+  return Object.entries(groups)
+    .filter(([, themes]) => themes.length > 0)
+    .sort(([a], [b]) => CATEGORY_CONFIG[a as ThemeCategory].order - CATEGORY_CONFIG[b as ThemeCategory].order)
+    .map(([category, themes]) => ({
+      category: category as ThemeCategory,
+      config: CATEGORY_CONFIG[category as ThemeCategory],
+      themes,
+    }));
+}
+
 export default function ThemedWordSearchHubPage() {
+  const categoryGroups = groupThemesByCategory();
+
   return (
     <div className="page">
-      <section className="hero">
+      <section className="hero" style={{ display: "block" }}>
         <div className="reveal">
           <span className="badge">Themed word searches</span>
           <h1>Themed Word Search Puzzles</h1>
-          <p>
-            Choose any of the curated themes below and the puzzle loads instantly with a playable grid, printable option, and a centered word list.
+          <p style={{ maxWidth: "600px" }}>
+            Choose a theme below and start playing instantly. Every puzzle is free, 
+            printable, and optimized for classrooms, parties, or quiet time.
           </p>
-          <p>
-            Every page is optimized for search and internal linking, so you can keep launching new themes without reinventing the layout.
-          </p>
-          <div className="hero-actions">
+          <div className="hero-actions" style={{ marginBottom: "2rem" }}>
             <Link className="button button-solid" href="/daily-word-search">
               Daily word search
             </Link>
             <Link className="button button-outline" href="/word-search-generator">
-              Word search generator
+              Create your own
             </Link>
-            <Link className="button button-outline" href="/printable-word-search">
-              Printable puzzles
-            </Link>
-          </div>
-        </div>
-        <div className="reveal reveal-delay-1 card">
-          <h2>First themed launches</h2>
-          <p className="hero-links">
-            Scroll through the first five themes designed to rank in high-intent searches. Each link leads to the new template with a playable puzzle above the fold.
-          </p>
-          <div className="hero-actions" style={{ flexWrap: "wrap" }}>
-            {THEMED_PAGES.map((theme) => (
-              <Link
-                key={theme.slug}
-                className="button button-outline"
-                href={`/themed-word-search-puzzles/${theme.slug}`}
-              >
-                {theme.title}
-              </Link>
-            ))}
           </div>
         </div>
       </section>
 
-      <section className="card prose">
+      <div className="theme-categories reveal reveal-delay-1">
+        {categoryGroups.map(({ category, config, themes }) => (
+          <div key={category} className="theme-category">
+            <div className="theme-category-header">
+              <span className="theme-category-icon">{config.icon}</span>
+              <h2 className="theme-category-title">{config.label}</h2>
+            </div>
+            <div className="theme-category-grid">
+              {themes.map((theme) => (
+                <Link
+                  key={theme.slug}
+                  className="button button-outline"
+                  href={`/themed-word-search-puzzles/${theme.slug}`}
+                >
+                  {theme.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <section className="card prose reveal reveal-delay-2">
         <h2>Why these themed pages matter</h2>
         <p>
-          Every themed page targets a unique keyword, opens with real copy, and immediately anchors the puzzle above the fold. That keeps the experience fast for players and gives Google a repeatable template that scales.
-        </p>
-        <p>
-          As you add more themes, keep this hub updated with the newest entries so crawlers see a single crawl path for the entire category.
+          Every themed page targets a unique keyword, opens with real copy, and immediately 
+          anchors the puzzle above the fold. That keeps the experience fast for players 
+          and gives Google a repeatable template that scales.
         </p>
         <p className="hero-links">
           Want to create a custom word list? Jump to the{" "}
-          <Link href="/word-search-generator">Word Search Generator</Link>, grab a printable copy from{" "}
-          <Link href="/printable-word-search">Printable Word Search Puzzles</Link>, or play the fresh{" "}
-          <Link href="/daily-word-search">Daily Word Search</Link>.
+          <Link href="/word-search-generator">Word Search Generator</Link>, grab a printable 
+          copy from <Link href="/printable-word-search">Printable Word Search Puzzles</Link>, 
+          or play the fresh <Link href="/daily-word-search">Daily Word Search</Link>.
         </p>
       </section>
 
