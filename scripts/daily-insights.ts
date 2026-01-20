@@ -1,130 +1,259 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { Octokit } from "@octokit/rest";
 import { Resend } from "resend";
 
 // ─── Configuration ───────────────────────────────────────────────────────────
-const VERCEL_ACCESS_TOKEN = process.env.VERCEL_ACCESS_TOKEN!;
-const VERCEL_PROJECT_ID = process.env.VERCEL_PROJECT_ID!;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY!;
 const RESEND_API_KEY = process.env.RESEND_API_KEY!;
 const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL!;
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN!;
-const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY!;
+const GOOGLE_CREDENTIALS = process.env.GOOGLE_CREDENTIALS!;
+const GA4_PROPERTY_ID = process.env.GA4_PROPERTY_ID!;
 
 // ─── Clients ─────────────────────────────────────────────────────────────────
 const anthropic = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
 const resend = new Resend(RESEND_API_KEY);
-const octokit = new Octokit({ auth: GITHUB_TOKEN });
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-interface VercelAnalyticsData {
+interface AnalyticsData {
   pageViews: number;
   visitors: number;
+  sessions: number;
+  avgSessionDuration: number;
+  bounceRate: number;
   topPages: { page: string; views: number }[];
-  topReferrers: { referrer: string; views: number }[];
-  topCountries: { country: string; views: number }[];
-  topDevices: { device: string; views: number }[];
+  topReferrers: { referrer: string; sessions: number }[];
+  topCountries: { country: string; visitors: number }[];
+  topDevices: { device: string; sessions: number }[];
 }
 
-// ─── Fetch Vercel Analytics ──────────────────────────────────────────────────
-async function fetchVercelAnalytics(): Promise<VercelAnalyticsData> {
-  const now = Date.now();
-  const oneDayAgo = now - 24 * 60 * 60 * 1000;
-
-  // Vercel Analytics API uses api.vercel.com, not vercel.com
-  const baseUrl = `https://api.vercel.com/v1/web/insights`;
+// ─── Google Auth ─────────────────────────────────────────────────────────────
+async function getGoogleAccessToken(): Promise<string> {
+  const credentials = JSON.parse(GOOGLE_CREDENTIALS);
   
+  // Create JWT
+  const header = { alg: "RS256", typ: "JWT" };
+  const now = Math.floor(Date.now() / 1000);
+  const claim = {
+    iss: credentials.client_email,
+    scope: "https://www.googleapis.com/auth/analytics.readonly",
+    aud: "https://oauth2.googleapis.com/token",
+    exp: now + 3600,
+    iat: now,
+  };
+
+  // Base64url encode
+  const base64url = (obj: object) =>
+    Buffer.from(JSON.stringify(obj))
+      .toString("base64")
+      .replace(/=/g, "")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_");
+
+  const unsignedToken = `${base64url(header)}.${base64url(claim)}`;
+
+  // Sign with private key
+  const crypto = await import("crypto");
+  const sign = crypto.createSign("RSA-SHA256");
+  sign.update(unsignedToken);
+  const signature = sign
+    .sign(credentials.private_key, "base64")
+    .replace(/=/g, "")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_");
+
+  const jwt = `${unsignedToken}.${signature}`;
+
+  // Exchange JWT for access token
+  const response = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
+  });
+
+  const data = await response.json();
+  if (data.error) {
+    throw new Error(`Google Auth Error: ${data.error_description || data.error}`);
+  }
+  return data.access_token;
+}
+
+// ─── Fetch Google Analytics ──────────────────────────────────────────────────
+async function fetchGoogleAnalytics(): Promise<AnalyticsData> {
+  console.log("🔑 Getting Google access token...");
+  const accessToken = await getGoogleAccessToken();
+  
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  
+  const dateRange = {
+    startDate: yesterday.toISOString().split("T")[0],
+    endDate: yesterday.toISOString().split("T")[0],
+  };
+
+  console.log(`📊 Fetching GA4 data for ${dateRange.startDate}...`);
+
+  const baseUrl = `https://analyticsdata.googleapis.com/v1beta/properties/${GA4_PROPERTY_ID}:runReport`;
   const headers = {
-    Authorization: `Bearer ${VERCEL_ACCESS_TOKEN}`,
+    Authorization: `Bearer ${accessToken}`,
     "Content-Type": "application/json",
   };
 
-  // Try fetching with different parameter formats
-  const params = new URLSearchParams({
-    projectId: VERCEL_PROJECT_ID,
-    from: new Date(oneDayAgo).toISOString(),
-    to: new Date(now).toISOString(),
-    environment: "production",
+  // Fetch overview metrics
+  const overviewResponse = await fetch(baseUrl, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      dateRanges: [dateRange],
+      metrics: [
+        { name: "screenPageViews" },
+        { name: "activeUsers" },
+        { name: "sessions" },
+        { name: "averageSessionDuration" },
+        { name: "bounceRate" },
+      ],
+    }),
   });
-
-  console.log("🔍 Debug: Fetching from Vercel Analytics API...");
-  console.log(`   Project ID: ${VERCEL_PROJECT_ID}`);
-  console.log(`   Time range: ${new Date(oneDayAgo).toISOString()} to ${new Date(now).toISOString()}`);
-
-  // Try the insights endpoint
-  try {
-    const response = await fetch(`${baseUrl}?${params}`, { headers });
-    const data = await response.json();
-    
-    console.log(`   API Response Status: ${response.status}`);
-    console.log(`   API Response: ${JSON.stringify(data).slice(0, 500)}...`);
-
-    if (data.error) {
-      console.log(`   ⚠️ API Error: ${data.error.message || JSON.stringify(data.error)}`);
-    }
-
-    // If the main insights endpoint doesn't work, try the legacy endpoint
-    if (!data.data && !data.pageViews) {
-      console.log("   Trying alternative endpoint...");
-      
-      const altParams = new URLSearchParams({
-        projectId: VERCEL_PROJECT_ID,
-        from: oneDayAgo.toString(),
-        to: now.toString(),
-      });
-      
-      const altResponse = await fetch(`https://vercel.com/api/web-analytics/timeseries?${altParams}`, { headers });
-      const altData = await altResponse.json();
-      
-      console.log(`   Alt API Response Status: ${altResponse.status}`);
-      console.log(`   Alt API Response: ${JSON.stringify(altData).slice(0, 500)}...`);
-    }
-  } catch (error) {
-    console.log(`   ❌ Fetch error: ${error}`);
+  const overviewData = await overviewResponse.json();
+  
+  if (overviewData.error) {
+    console.error("GA4 API Error:", overviewData.error);
+    throw new Error(`GA4 Error: ${overviewData.error.message}`);
   }
 
-  // For now, return placeholder data so the rest of the pipeline works
-  // We'll see what the API returns in the logs
+  // Fetch top pages
+  const pagesResponse = await fetch(baseUrl, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      dateRanges: [dateRange],
+      dimensions: [{ name: "pagePath" }],
+      metrics: [{ name: "screenPageViews" }],
+      limit: 10,
+      orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
+    }),
+  });
+  const pagesData = await pagesResponse.json();
+
+  // Fetch top referrers
+  const referrersResponse = await fetch(baseUrl, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      dateRanges: [dateRange],
+      dimensions: [{ name: "sessionSource" }],
+      metrics: [{ name: "sessions" }],
+      limit: 10,
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+    }),
+  });
+  const referrersData = await referrersResponse.json();
+
+  // Fetch top countries
+  const countriesResponse = await fetch(baseUrl, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      dateRanges: [dateRange],
+      dimensions: [{ name: "country" }],
+      metrics: [{ name: "activeUsers" }],
+      limit: 10,
+      orderBys: [{ metric: { metricName: "activeUsers" }, desc: true }],
+    }),
+  });
+  const countriesData = await countriesResponse.json();
+
+  // Fetch device breakdown
+  const devicesResponse = await fetch(baseUrl, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      dateRanges: [dateRange],
+      dimensions: [{ name: "deviceCategory" }],
+      metrics: [{ name: "sessions" }],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+    }),
+  });
+  const devicesData = await devicesResponse.json();
+
+  // Parse overview metrics
+  const metrics = overviewData.rows?.[0]?.metricValues || [];
+  const pageViews = parseInt(metrics[0]?.value || "0");
+  const visitors = parseInt(metrics[1]?.value || "0");
+  const sessions = parseInt(metrics[2]?.value || "0");
+  const avgSessionDuration = parseFloat(metrics[3]?.value || "0");
+  const bounceRate = parseFloat(metrics[4]?.value || "0") * 100;
+
+  // Parse dimensional data
+  const topPages = (pagesData.rows || []).slice(0, 5).map((row: { dimensionValues: { value: string }[]; metricValues: { value: string }[] }) => ({
+    page: row.dimensionValues[0].value,
+    views: parseInt(row.metricValues[0].value),
+  }));
+
+  const topReferrers = (referrersData.rows || []).slice(0, 5).map((row: { dimensionValues: { value: string }[]; metricValues: { value: string }[] }) => ({
+    referrer: row.dimensionValues[0].value || "(direct)",
+    sessions: parseInt(row.metricValues[0].value),
+  }));
+
+  const topCountries = (countriesData.rows || []).slice(0, 5).map((row: { dimensionValues: { value: string }[]; metricValues: { value: string }[] }) => ({
+    country: row.dimensionValues[0].value,
+    visitors: parseInt(row.metricValues[0].value),
+  }));
+
+  const topDevices = (devicesData.rows || []).map((row: { dimensionValues: { value: string }[]; metricValues: { value: string }[] }) => ({
+    device: row.dimensionValues[0].value,
+    sessions: parseInt(row.metricValues[0].value),
+  }));
+
+  console.log(`   ✅ Found ${pageViews} page views, ${visitors} visitors`);
+
   return {
-    pageViews: 0,
-    visitors: 0,
-    topPages: [],
-    topReferrers: [],
-    topCountries: [],
-    topDevices: [],
+    pageViews,
+    visitors,
+    sessions,
+    avgSessionDuration,
+    bounceRate,
+    topPages,
+    topReferrers,
+    topCountries,
+    topDevices,
   };
 }
 
 // ─── Format Metrics for LLM ──────────────────────────────────────────────────
-function formatMetricsForLLM(data: VercelAnalyticsData): string {
+function formatMetricsForLLM(data: AnalyticsData): string {
   const topPagesStr = data.topPages
     .map((p, i) => `  ${i + 1}. ${p.page} (${p.views} views)`)
     .join("\n");
 
   const topReferrersStr = data.topReferrers
-    .map((r, i) => `  ${i + 1}. ${r.referrer} (${r.views} visits)`)
+    .map((r, i) => `  ${i + 1}. ${r.referrer} (${r.sessions} sessions)`)
     .join("\n");
 
   const topCountriesStr = data.topCountries
-    .map((c, i) => `  ${i + 1}. ${c.country} (${c.views} visitors)`)
+    .map((c, i) => `  ${i + 1}. ${c.country} (${c.visitors} visitors)`)
     .join("\n");
 
   const topDevicesStr = data.topDevices
-    .map((d) => `  - ${d.device}: ${d.views} visitors`)
+    .map((d) => `  - ${d.device}: ${d.sessions} sessions`)
     .join("\n");
+
+  const avgDurationFormatted = `${Math.floor(data.avgSessionDuration / 60)}m ${Math.floor(data.avgSessionDuration % 60)}s`;
 
   return `
 📊 WORD SEARCH PUZZLE WEBSITE - DAILY METRICS
-Date: ${new Date().toISOString().split("T")[0]}
+Date: ${new Date().toISOString().split("T")[0]} (data from yesterday)
 
 TRAFFIC OVERVIEW:
-- Total Page Views: ${data.pageViews.toLocaleString()}
+- Page Views: ${data.pageViews.toLocaleString()}
 - Unique Visitors: ${data.visitors.toLocaleString()}
+- Sessions: ${data.sessions.toLocaleString()}
+- Avg Session Duration: ${avgDurationFormatted}
+- Bounce Rate: ${data.bounceRate.toFixed(1)}%
 
 TOP PAGES:
 ${topPagesStr || "  (no data)"}
 
-TOP REFERRERS:
+TOP TRAFFIC SOURCES:
 ${topReferrersStr || "  (no data)"}
 
 TOP COUNTRIES:
@@ -202,7 +331,7 @@ async function sendEmail(metrics: string, recommendation: string): Promise<void>
         </div>
         
         <p style="color: #666; font-size: 12px; margin-top: 24px;">
-          This insight was generated by Claude AI based on your Vercel Analytics data.
+          This insight was generated by Claude AI based on your Google Analytics data.
         </p>
       </div>
     `,
@@ -229,7 +358,7 @@ ${metrics}
 ${recommendation}
 
 ---
-*Generated automatically by the Daily Insights system*
+*Generated automatically by the Daily Insights system using Google Analytics*
 `;
 
   // Write to local filesystem (GitHub Actions will commit it)
@@ -249,9 +378,9 @@ ${recommendation}
 async function main() {
   console.log("🚀 Starting daily insights generation...\n");
 
-  // 1. Fetch analytics
-  console.log("📊 Fetching Vercel Analytics...");
-  const analyticsData = await fetchVercelAnalytics();
+  // 1. Fetch analytics from Google Analytics
+  console.log("📊 Fetching Google Analytics data...");
+  const analyticsData = await fetchGoogleAnalytics();
   const metricsText = formatMetricsForLLM(analyticsData);
   console.log(metricsText);
   console.log();
