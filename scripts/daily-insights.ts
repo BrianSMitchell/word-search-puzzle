@@ -79,12 +79,6 @@ async function getGoogleAccessToken(): Promise<string> {
 // ─── Fetch Google Analytics ──────────────────────────────────────────────────
 async function fetchGoogleAnalytics(): Promise<AnalyticsData> {
   console.log("🔑 Getting Google access token...");
-  
-  // Debug credential info
-  const credentials = JSON.parse(GOOGLE_CREDENTIALS);
-  console.log(`   Service Account Email: ${credentials.client_email}`);
-  console.log(`   Property ID: '${GA4_PROPERTY_ID}'`);
-  
   const accessToken = await getGoogleAccessToken();
   
   const today = new Date();

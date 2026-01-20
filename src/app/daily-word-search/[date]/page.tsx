@@ -1,16 +1,16 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/AdSlot";
 import { PuzzleBoard } from "@/components/PuzzleBoard";
 import { ShareButton } from "@/components/ShareButton";
-import { generatePuzzle } from "@/lib/puzzle/generator";
 import { getDailySeed, getDailyWords, getRecentDateKeys } from "@/lib/puzzle/daily";
+import { generatePuzzle } from "@/lib/puzzle/generator";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type DailyPageProps = {
-  params: {
+  params: Promise<{
     date: string;
-  };
+  }>;
 };
 
 const inlineSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_INLINE ?? "";
@@ -30,36 +30,39 @@ export function generateStaticParams() {
   return getRecentDateKeys(30).map((date) => ({ date }));
 }
 
-export function generateMetadata({ params }: DailyPageProps): Metadata {
-  if (!isValidDateKey(params.date)) {
+export async function generateMetadata({ params }: DailyPageProps): Promise<Metadata> {
+  const { date } = await params;
+  if (!isValidDateKey(date)) {
     return { title: "Daily Word Search Puzzle" };
   }
-  return {
-    title: `Daily Word Search Puzzle - ${params.date}`,
-    description: `Play the daily word search for ${params.date}. Free online puzzle with no download required.`,
-  };
+  return { title: `Daily Word Search Puzzle - ${date}` };
 }
 
-export default function DailyWordSearchArchivePage({ params }: DailyPageProps) {
-  if (!isValidDateKey(params.date)) {
-    notFound();
+export default async function DailyPage({ params }: DailyPageProps) {
+  const { date } = await params;
+  
+  if (!isValidDateKey(date)) {
+    return notFound();
   }
 
-  const dateKey = params.date;
-  const words = getDailyWords(dateKey);
+  const dateKey = date;
+
+  const words = await getDailyWords(dateKey);
+  const seed = await getDailySeed(dateKey);
   const puzzle = generatePuzzle({
-    seed: getDailySeed(dateKey),
-    gridSize: 14,
+    seed,
+    gridSize: 15,
     words,
     allowDiagonal: true,
     allowBackwards: true,
   });
-  const archiveDates = getRecentDateKeys(14, new Date(`${dateKey}T00:00:00Z`)).slice(1);
+
+  const archiveDates = getRecentDateKeys(30).filter((d) => d !== dateKey);
 
   return (
-    <div className="page">
+    <div className="page-container">
       <section className="hero">
-        <div className="reveal">
+        <div className="hero-content">
           <span className="badge">Daily word search archive</span>
           <h1>Daily Word Search Puzzle</h1>
           <p>
