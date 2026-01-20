@@ -31,67 +31,67 @@ async function fetchVercelAnalytics(): Promise<VercelAnalyticsData> {
   const now = Date.now();
   const oneDayAgo = now - 24 * 60 * 60 * 1000;
 
-  const baseUrl = `https://vercel.com/api/web-analytics`;
-  const params = new URLSearchParams({
-    projectId: VERCEL_PROJECT_ID,
-    from: oneDayAgo.toString(),
-    to: now.toString(),
-    limit: "10",
-  });
-
+  // Vercel Analytics API uses api.vercel.com, not vercel.com
+  const baseUrl = `https://api.vercel.com/v1/web/insights`;
+  
   const headers = {
     Authorization: `Bearer ${VERCEL_ACCESS_TOKEN}`,
     "Content-Type": "application/json",
   };
 
-  // Fetch multiple endpoints in parallel
-  const [pageViewsRes, visitorsRes, pagesRes, referrersRes, countriesRes, devicesRes] =
-    await Promise.all([
-      fetch(`${baseUrl}/page-views?${params}`, { headers }),
-      fetch(`${baseUrl}/visitors?${params}`, { headers }),
-      fetch(`${baseUrl}/top/pages?${params}`, { headers }),
-      fetch(`${baseUrl}/top/referrers?${params}`, { headers }),
-      fetch(`${baseUrl}/top/countries?${params}`, { headers }),
-      fetch(`${baseUrl}/top/devices?${params}`, { headers }),
-    ]);
+  // Try fetching with different parameter formats
+  const params = new URLSearchParams({
+    projectId: VERCEL_PROJECT_ID,
+    from: new Date(oneDayAgo).toISOString(),
+    to: new Date(now).toISOString(),
+    environment: "production",
+  });
 
-  // Parse responses
-  const pageViewsData = await pageViewsRes.json();
-  const visitorsData = await visitorsRes.json();
-  const pagesData = await pagesRes.json();
-  const referrersData = await referrersRes.json();
-  const countriesData = await countriesRes.json();
-  const devicesData = await devicesRes.json();
+  console.log("🔍 Debug: Fetching from Vercel Analytics API...");
+  console.log(`   Project ID: ${VERCEL_PROJECT_ID}`);
+  console.log(`   Time range: ${new Date(oneDayAgo).toISOString()} to ${new Date(now).toISOString()}`);
 
-  // Sum up page views and visitors from time series data
-  const pageViews = pageViewsData.data?.reduce(
-    (sum: number, d: { value: number }) => sum + d.value,
-    0
-  ) ?? 0;
-  const visitors = visitorsData.data?.reduce(
-    (sum: number, d: { value: number }) => sum + d.value,
-    0
-  ) ?? 0;
+  // Try the insights endpoint
+  try {
+    const response = await fetch(`${baseUrl}?${params}`, { headers });
+    const data = await response.json();
+    
+    console.log(`   API Response Status: ${response.status}`);
+    console.log(`   API Response: ${JSON.stringify(data).slice(0, 500)}...`);
 
+    if (data.error) {
+      console.log(`   ⚠️ API Error: ${data.error.message || JSON.stringify(data.error)}`);
+    }
+
+    // If the main insights endpoint doesn't work, try the legacy endpoint
+    if (!data.data && !data.pageViews) {
+      console.log("   Trying alternative endpoint...");
+      
+      const altParams = new URLSearchParams({
+        projectId: VERCEL_PROJECT_ID,
+        from: oneDayAgo.toString(),
+        to: now.toString(),
+      });
+      
+      const altResponse = await fetch(`https://vercel.com/api/web-analytics/timeseries?${altParams}`, { headers });
+      const altData = await altResponse.json();
+      
+      console.log(`   Alt API Response Status: ${altResponse.status}`);
+      console.log(`   Alt API Response: ${JSON.stringify(altData).slice(0, 500)}...`);
+    }
+  } catch (error) {
+    console.log(`   ❌ Fetch error: ${error}`);
+  }
+
+  // For now, return placeholder data so the rest of the pipeline works
+  // We'll see what the API returns in the logs
   return {
-    pageViews,
-    visitors,
-    topPages: (pagesData.data ?? []).slice(0, 5).map((p: { key: string; value: number }) => ({
-      page: p.key,
-      views: p.value,
-    })),
-    topReferrers: (referrersData.data ?? []).slice(0, 5).map((r: { key: string; value: number }) => ({
-      referrer: r.key || "(direct)",
-      views: r.value,
-    })),
-    topCountries: (countriesData.data ?? []).slice(0, 5).map((c: { key: string; value: number }) => ({
-      country: c.key,
-      views: c.value,
-    })),
-    topDevices: (devicesData.data ?? []).slice(0, 3).map((d: { key: string; value: number }) => ({
-      device: d.key,
-      views: d.value,
-    })),
+    pageViews: 0,
+    visitors: 0,
+    topPages: [],
+    topReferrers: [],
+    topCountries: [],
+    topDevices: [],
   };
 }
 
