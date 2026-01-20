@@ -69,7 +69,7 @@ export function PuzzleBoard({
   const [foundWords, setFoundWords] = useState<Set<string>>(new Set());
   const [foundCells, setFoundCells] = useState<Set<string>>(new Set());
   const [activeCell, setActiveCell] = useState<Cell>({ row: 0, col: 0 });
-  const [statusMessage, setStatusMessage] = useState("Find all words in the list.");
+  const [statusMessage, setStatusMessage] = useState("");
 
   const wordSet = useMemo(() => new Set(puzzle.words), [puzzle.words]);
 

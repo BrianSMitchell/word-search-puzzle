@@ -15,7 +15,6 @@ export function DailyGame({ puzzle }: { puzzle: Puzzle }) {
     <div className="mx-auto">
       <PuzzleBoard
         puzzle={puzzle}
-        title="Daily Puzzle"
         onWordFound={() => playSound("/sounds/pop.mp3")}
         onComplete={() => {
           playSound("/sounds/win.mp3");
