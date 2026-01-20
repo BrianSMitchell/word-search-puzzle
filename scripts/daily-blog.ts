@@ -53,7 +53,7 @@ Please suggest exactly ONE topic idea. Return ONLY the topic title/headline.
 `;
 
   const response = await anthropic.messages.create({
-    model: "claude-3-5-sonnet-20240620",
+    model: "claude-sonnet-4-20250514",
     max_tokens: 100,
     messages: [{ role: "user", content: prompt }],
     system: SYSTEM_PROMPT,
@@ -94,7 +94,7 @@ Do not include any other text before or after the markdown.
 `;
 
   const response = await anthropic.messages.create({
-    model: "claude-3-5-sonnet-20240620",
+    model: "claude-sonnet-4-20250514",
     max_tokens: 2000,
     messages: [{ role: "user", content: prompt }],
     system: SYSTEM_PROMPT,
