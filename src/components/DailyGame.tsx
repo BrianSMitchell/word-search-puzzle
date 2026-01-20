@@ -12,7 +12,7 @@ export function DailyGame({ puzzle }: { puzzle: Puzzle }) {
   const { playSound } = useSound(isSoundEnabled);
 
   return (
-    <div className="relative">
+    <div className="relative max-w-[960px] mx-auto">
       <div className="flex justify-between items-center mb-4 bg-muted/30 p-3 rounded-lg border border-border">
         <div className="flex items-center gap-4">
            <div className="flex items-center gap-2">

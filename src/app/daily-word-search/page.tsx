@@ -22,7 +22,7 @@ export default function DailyWordSearchPage() {
   const words = getDailyWords(dateKey);
   const puzzle = generatePuzzle({
     seed: getDailySeed(dateKey),
-    gridSize: 14,
+    gridSize: 16,
     words,
     allowDiagonal: true,
     allowBackwards: true,
