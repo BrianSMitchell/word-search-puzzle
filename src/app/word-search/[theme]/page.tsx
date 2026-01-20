@@ -1,8 +1,8 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
 import { getThemeBySlug, getThemeSeed, getThemeSlugs } from "@/lib/puzzle/themes";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type ThemePageProps = {
   params: Promise<{
@@ -37,7 +37,7 @@ export default async function ThemeWordSearchPage({ params }: ThemePageProps) {
 
   return (
     <div className="page">
-      <section className="hero">
+      <section className="hero hero-tool">
         <div className="reveal">
           <span className="badge">{theme.name} word search</span>
           <h1>{theme.title}</h1>

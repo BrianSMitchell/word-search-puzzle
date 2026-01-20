@@ -61,7 +61,7 @@ export default async function DailyPage({ params }: DailyPageProps) {
 
   return (
     <div className="page-container">
-      <section className="hero">
+      <section className="hero hero-tool">
         <div className="hero-content">
           <span className="badge">Daily word search archive</span>
           <h1>Daily Word Search Puzzle</h1>

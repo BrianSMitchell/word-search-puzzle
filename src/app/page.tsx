@@ -1,9 +1,9 @@
-import Link from "next/link";
-import type { Metadata } from "next";
 import { AdSlot } from "@/components/AdSlot";
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
 import { seedFromString } from "@/lib/puzzle/rng";
 import { HOMEPAGE_WORDS } from "@/lib/puzzle/words";
+import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Free Word Search Puzzles Online - Play Instantly (No Download)",
@@ -17,7 +17,7 @@ const sidebarSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR ?? "";
 export default function HomePage() {
   return (
     <div className="page">
-      <section className="hero">
+      <section className="hero hero-tool">
         <div className="reveal">
           <span className="badge">Free, online, no download</span>
           <h1>Free Word Search Puzzles Online</h1>

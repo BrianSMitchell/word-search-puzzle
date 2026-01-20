@@ -1,7 +1,7 @@
-import Link from "next/link";
-import type { Metadata } from "next";
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
 import { getDifficultyBySlug, getDifficultySeed } from "@/lib/puzzle/difficulties";
+import type { Metadata } from "next";
+import Link from "next/link";
 
 const difficulty = getDifficultyBySlug("medium");
 
@@ -18,7 +18,7 @@ export default function MediumWordSearchPage() {
 
   return (
     <div className="page">
-      <section className="hero">
+      <section className="hero hero-tool">
         <div className="reveal">
           <span className="badge">Medium word search</span>
           <h1>{difficulty.title}</h1>

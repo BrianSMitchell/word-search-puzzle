@@ -45,7 +45,7 @@ export default async function ThemedWordSearchPage({ params }: ThemePageProps) {
 
   return (
     <div className="page">
-      <section className="hero">
+      <section className="hero hero-tool">
         <div className="reveal no-print">
           <span className="badge">{theme.name} puzzles</span>
           <h1>{theme.title}</h1>

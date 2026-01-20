@@ -1,12 +1,12 @@
-import Link from "next/link";
-import type { Metadata } from "next";
 import { AdSlot } from "@/components/AdSlot";
+import { PdfDownloadButton } from "@/components/PdfDownloadButton";
 import { PrintablePuzzle } from "@/components/PrintablePuzzle";
 import { PrintButton } from "@/components/PrintButton";
-import { PdfDownloadButton } from "@/components/PdfDownloadButton";
 import { generatePuzzle } from "@/lib/puzzle/generator";
 import { seedFromString } from "@/lib/puzzle/rng";
 import { PRINTABLE_WORDS } from "@/lib/puzzle/words";
+import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Printable Word Search Puzzles (Free PDFs)",
@@ -28,7 +28,7 @@ export default function PrintableWordSearchPage() {
 
   return (
     <div className="page">
-      <section className="hero">
+      <section className="hero hero-tool">
         <div className="reveal">
           <span className="badge">Printable word search puzzles</span>
           <h1>Printable Word Search Puzzles</h1>

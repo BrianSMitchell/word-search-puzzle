@@ -31,7 +31,7 @@ export default function DailyWordSearchPage() {
 
   return (
     <div className="page">
-      <section className="hero">
+      <section className="hero hero-tool">
         <div className="reveal no-print">
           <span className="badge">Daily word search</span>
           <h1>Daily Word Search Puzzle</h1>
