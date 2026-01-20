@@ -34,6 +34,8 @@
   touch-action: none;
   user-select: none;
   container-type: inline-size;
+  margin: 0 auto;
+  max-width: 100%;
 }
 
 .cell {
@@ -41,15 +43,15 @@
   border-radius: 0.5rem;
   background: var(--surface-raised);
   color: var(--text);
-  min-width: 1.2rem;
-  min-height: 1.2rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   font-weight: 600;
-  font-size: clamp(0.7rem, 2.8cqi, 1rem);
+  font-size: clamp(0.75rem, 3.5cqi, 1.25rem);
   text-transform: uppercase;
   transition: transform 0.1s ease, background 0.2s ease, border-color 0.2s ease;
 }
@@ -139,7 +141,7 @@
   opacity: 0.75;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1240px) {
   .content {
     grid-template-columns: minmax(0, 1fr) 280px;
     align-items: start;

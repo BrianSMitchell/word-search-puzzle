@@ -320,7 +320,7 @@ textarea {
     display: grid;
     grid-template-columns: 360px 1fr;
     align-items: start;
-    gap: 3rem;
+    gap: 1.5rem;
   }
 }
 
