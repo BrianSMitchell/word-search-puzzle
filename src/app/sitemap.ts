@@ -1,8 +1,9 @@
-import type { MetadataRoute } from "next";
-import { siteUrl } from "@/lib/site";
+import { getAllPosts } from "@/lib/blog";
 import { getRecentDateKeys } from "@/lib/puzzle/daily";
-import { THEMES } from "@/lib/puzzle/themes";
 import { THEMED_PAGES } from "@/lib/puzzle/themedPages";
+import { THEMES } from "@/lib/puzzle/themes";
+import { siteUrl } from "@/lib/site";
+import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl.replace(/\/$/, "");
@@ -16,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/hard-word-search",
     "/word-search-generator",
     "/printable-word-search",
+    "/blog",
   ];
 
   const dailyRoutes = getRecentDateKeys(30).map((date) => ({
@@ -33,6 +35,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
+  const blogRoutes = getAllPosts().map((post) => ({
+    url: `${base}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+  }));
+
   return [
     ...staticRoutes.map((route) => ({
       url: `${base}${route}`,
@@ -41,5 +48,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...dailyRoutes,
     ...themedRoutes,
     ...legacyThemeRoutes,
+    ...blogRoutes,
   ];
 }
