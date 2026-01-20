@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ThemeControls } from "./ThemeControls";
 import styles from "./SiteHeader.module.css";
+import { ThemeControls } from "./ThemeControls";
 
 export function SiteHeader() {
   return (
@@ -17,6 +17,7 @@ export function SiteHeader() {
             <Link href="/themed-word-search-puzzles">Themed Puzzles</Link>
             <Link href="/word-search-generator">Word Search Generator</Link>
             <Link href="/printable-word-search">Printable Puzzles</Link>
+            <Link href="/blog">Blog</Link>
           </nav>
           <ThemeControls />
         </div>

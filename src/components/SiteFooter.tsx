@@ -18,6 +18,7 @@ export function SiteFooter() {
             <Link href="/themed-word-search-puzzles">Themed Puzzles</Link>
             <Link href="/word-search-generator">Make Your Own</Link>
             <Link href="/printable-word-search">Printable Puzzles</Link>
+            <Link href="/blog">Blog</Link>
           </nav>
         </div>
         <p className={styles.meta}>
