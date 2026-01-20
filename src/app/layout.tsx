@@ -51,7 +51,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <SiteHeader />
         <main id="main-content" className="site-main">
-          {children}
+          <div className="container">
+            {children}
+          </div>
         </main>
         <SiteFooter />
         <GoogleAnalytics />

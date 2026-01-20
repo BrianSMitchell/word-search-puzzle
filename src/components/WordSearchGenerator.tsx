@@ -76,104 +76,109 @@ export function WordSearchGenerator({
 
   return (
     <div className="card">
-      <div className="form-grid no-print">
-        {initialThemeName?.trim() ? (
-          <p className="badge">Custom theme: {initialThemeName.trim()}</p>
-        ) : null}
-        
-        <div className="field">
-          <label htmlFor="auto-count">Auto-generate random words</label>
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            <input
-              id="auto-count"
-              type="number"
-              min="2"
-              max="30"
-              value={autoCount}
-              onChange={(e) => setAutoCount(parseInt(e.target.value) || 0)}
-              style={{ width: "80px" }}
-            />
-            <button className="button button-outline" type="button" onClick={handleAutoFill}>
-              Fill word list
-            </button>
+      <div className="generator-content">
+        <div className="form-grid no-print">
+          {initialThemeName?.trim() ? (
+            <p className="badge">Custom theme: {initialThemeName.trim()}</p>
+          ) : null}
+          
+          <div className="field">
+            <label htmlFor="auto-count">Auto-generate random words</label>
+            <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+              <input
+                id="auto-count"
+                type="number"
+                min="2"
+                max="30"
+                value={autoCount}
+                onChange={(e) => setAutoCount(parseInt(e.target.value) || 0)}
+                style={{ width: "80px" }}
+              />
+              <button className="button button-outline" type="button" onClick={handleAutoFill}>
+                Fill word list
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div className="field">
-          <label htmlFor="word-list">Word list (comma or new line separated)</label>
-          <textarea
-            id="word-list"
-            value={rawWords}
-            onChange={(event) => setRawWords(event.target.value)}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="grid-size">Grid size</label>
-          <select
-            id="grid-size"
-            value={gridSize}
-            onChange={(event) => setGridSize(Number(event.target.value))}
-          >
-            {GRID_OPTIONS.map((size) => (
-              <option key={size} value={size}>
-                {size} x {size}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="field">
-          <label>Difficulty options</label>
+          <div className="field">
+            <label htmlFor="word-list">Word list (comma or new line separated)</label>
+            <textarea
+              id="word-list"
+              value={rawWords}
+              onChange={(event) => setRawWords(event.target.value)}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="grid-size">Grid size</label>
+            <select
+              id="grid-size"
+              value={gridSize}
+              onChange={(event) => setGridSize(Number(event.target.value))}
+            >
+              {GRID_OPTIONS.map((size) => (
+                <option key={size} value={size}>
+                  {size} x {size}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
+            <label>Difficulty options</label>
+            <div className="hero-actions">
+              <button
+                className="button button-outline"
+                type="button"
+                onClick={() => setAllowDiagonal((value) => !value)}
+                aria-pressed={allowDiagonal}
+              >
+                {allowDiagonal ? "Diagonal on" : "Diagonal off"}
+              </button>
+              <button
+                className="button button-outline"
+                type="button"
+                onClick={() => setAllowBackwards((value) => !value)}
+                aria-pressed={allowBackwards}
+              >
+                {allowBackwards ? "Backwards on" : "Backwards off"}
+              </button>
+            </div>
+          </div>
           <div className="hero-actions">
             <button
-              className="button button-outline"
+              className="button button-solid"
               type="button"
-              onClick={() => setAllowDiagonal((value) => !value)}
-              aria-pressed={allowDiagonal}
+              onClick={() => setGeneration((value) => value + 1)}
             >
-              {allowDiagonal ? "Diagonal on" : "Diagonal off"}
+              Generate puzzle
             </button>
-            <button
-              className="button button-outline"
-              type="button"
-              onClick={() => setAllowBackwards((value) => !value)}
-              aria-pressed={allowBackwards}
-            >
-              {allowBackwards ? "Backwards on" : "Backwards off"}
+            <button className="button button-outline" type="button" onClick={() => window.print()}>
+              Print puzzle
             </button>
           </div>
+          {!isPuzzleValid ? (
+            <p className="badge no-print">
+              Some words do not fit in the grid. Try fewer words or a larger size.
+            </p>
+          ) : null}
         </div>
-        <div className="hero-actions">
-          <button
-            className="button button-solid"
-            type="button"
-            onClick={() => setGeneration((value) => value + 1)}
-          >
-            Generate puzzle
-          </button>
-          <button className="button button-outline" type="button" onClick={() => window.print()}>
-            Print puzzle
-          </button>
+
+        <div className="generator-preview">
+          {normalizedWords.length > 0 && isPuzzleValid ? (
+            <div className="reveal reveal-delay-1">
+              <PuzzleBoard
+                puzzle={puzzle}
+                title="Your custom puzzle"
+                onNewPuzzle={() => setGeneration((value) => value + 1)}
+                newPuzzleLabel="New layout"
+              />
+            </div>
+          ) : (
+            <p className="badge no-print">
+              Add at least two words and keep them short enough to fit the grid.
+            </p>
+          )}
         </div>
-        {!isPuzzleValid ? (
-          <p className="badge no-print">
-            Some words do not fit in the grid. Try fewer words or a larger size.
-          </p>
-        ) : null}
       </div>
-      {normalizedWords.length > 0 && isPuzzleValid ? (
-        <div className="reveal reveal-delay-1" style={{ marginTop: "1.5rem" }}>
-          <PuzzleBoard
-            puzzle={puzzle}
-            title="Your custom puzzle"
-            onNewPuzzle={() => setGeneration((value) => value + 1)}
-            newPuzzleLabel="New layout"
-          />
-        </div>
-      ) : (
-        <p className="badge no-print" style={{ marginTop: "1.5rem" }}>
-          Add at least two words and keep them short enough to fit the grid.
-        </p>
-      )}
     </div>
   );
 }

@@ -26,7 +26,8 @@ export default async function WordSearchGeneratorPage({ searchParams }: WordSear
 
   return (
     <div className="page">
-      <section className="hero">
+
+      <section className="hero hero-tool">
         <div className="reveal no-print">
           <span className="badge">Word search generator</span>
           <h1>Word Search Generator</h1>
