@@ -47,12 +47,12 @@ export function DailyGame({ puzzle }: { puzzle: Puzzle }) {
               <button
                 type="button"
                 onClick={() => setIsSoundEnabled(!isSoundEnabled)}
-                className="flex items-center gap-2 text-xs font-bold uppercase tracking-tight py-1.5 px-3 rounded-md hover:bg-muted/40 transition-colors border border-border/80 bg-muted/10 shadow-sm"
+                className="flex items-center gap-2.5 text-xs font-black uppercase tracking-widest py-2.5 px-4 rounded-xl transition-all border-2 border-[var(--text)] bg-[var(--surface-raised)] hover:bg-[var(--accent)] hover:text-[var(--accent-contrast)] hover:border-[var(--accent)] hover:shadow-lg shadow-md group"
               >
                 {isSoundEnabled ? (
-                  <><span>🔊</span> On</>
+                  <><span className="text-lg">🔊</span> <span className="text-[var(--text)] group-hover:text-[var(--accent-contrast)]">Sound On</span></>
                 ) : (
-                  <><span>🔇</span> Off</>
+                  <><span className="text-lg opacity-60">🔇</span> <span className="text-[var(--muted)] group-hover:text-[var(--accent-contrast)]">Sound Off</span></>
                 )}
               </button>
             </div>
