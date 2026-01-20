@@ -11,6 +11,7 @@ type PuzzleBoardProps = {
   newPuzzleLabel?: string;
   onWordFound?: (word: string) => void;
   onComplete?: () => void;
+  sidecarFooter?: React.ReactNode;
 };
 
 type Direction = {
@@ -59,6 +60,7 @@ export function PuzzleBoard({
   newPuzzleLabel,
   onWordFound,
   onComplete,
+  sidecarFooter,
 }: PuzzleBoardProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const [start, setStart] = useState<Cell | null>(null);
@@ -285,6 +287,7 @@ export function PuzzleBoard({
                 {newPuzzleLabel ?? "New puzzle"}
               </button>
             ) : null}
+            {sidecarFooter && <div className={styles.sidecarFooter}>{sidecarFooter}</div>}
           </div>
         </aside>
       </div>

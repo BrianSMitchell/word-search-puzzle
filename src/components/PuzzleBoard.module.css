@@ -139,6 +139,15 @@
   opacity: 0.75;
 }
 
+.sidecarFooter {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 @media (min-width: 1240px) {
   .content {
     grid-template-columns: minmax(0, 1fr) 280px;

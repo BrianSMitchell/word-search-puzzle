@@ -12,50 +12,7 @@ export function DailyGame({ puzzle }: { puzzle: Puzzle }) {
   const { playSound } = useSound(isSoundEnabled);
 
   return (
-    <div className="relative max-w-[960px] mx-auto">
-      <div className="flex justify-between items-center mb-4 bg-muted/30 p-3 rounded-lg border border-border">
-        <div className="flex items-center gap-4">
-           <div className="flex items-center gap-2">
-             <span className="text-2xl" role="img" aria-label="fire">🔥</span>
-             <div>
-               <div className="font-bold text-lg leading-none">
-                 {stats.currentStreak} Day Streak
-               </div>
-               <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-                 Keep it up!
-               </div>
-             </div>
-           </div>
-           
-           <div className="hidden sm:block w-px h-8 bg-border" />
-
-           <div className="hidden sm:block">
-             <div className="font-bold text-lg leading-none">
-               {stats.totalCompleted}
-             </div>
-             <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-               Solved
-             </div>
-           </div>
-        </div>
-        
-        <button
-          type="button"
-          onClick={() => setIsSoundEnabled(!isSoundEnabled)}
-          className="flex items-center gap-2 text-sm font-medium px-3 py-1.5 rounded-md hover:bg-background transition-colors"
-        >
-          {isSoundEnabled ? (
-            <>
-              <span>🔊</span> <span className="hidden sm:inline">Sound On</span>
-            </>
-          ) : (
-            <>
-              <span>🔇</span> <span className="hidden sm:inline">Sound Off</span>
-            </>
-          )}
-        </button>
-      </div>
-
+    <div className="mx-auto">
       <PuzzleBoard
         puzzle={puzzle}
         title="Daily Puzzle"
@@ -64,6 +21,44 @@ export function DailyGame({ puzzle }: { puzzle: Puzzle }) {
           playSound("/sounds/win.mp3");
           incrementCompleted(true);
         }}
+        sidecarFooter={
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3 bg-muted/20 p-2.5 rounded-lg border border-border/50">
+              <span className="text-xl" role="img" aria-label="fire">🔥</span>
+              <div>
+                <div className="font-bold text-base leading-none">
+                  {stats.currentStreak} Day Streak
+                </div>
+                <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold mt-1">
+                  Keep it up!
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between px-1">
+              <div>
+                <div className="font-bold text-lg leading-none">
+                  {stats.totalCompleted}
+                </div>
+                <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">
+                  Solved
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsSoundEnabled(!isSoundEnabled)}
+                className="flex items-center gap-2 text-xs font-bold uppercase tracking-tight py-1 px-2 rounded-md hover:bg-muted/30 transition-colors border border-border/40"
+              >
+                {isSoundEnabled ? (
+                  <><span>🔊</span> On</>
+                ) : (
+                  <><span>🔇</span> Off</>
+                )}
+              </button>
+            </div>
+          </div>
+        }
       />
     </div>
   );
