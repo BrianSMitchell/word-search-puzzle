@@ -88,8 +88,11 @@ export function PuzzleBoard({
 
   const isComplete = foundWords.size === puzzle.words.length && puzzle.words.length > 0;
 
+  const hasNotifiedComplete = useRef(false);
+
   useEffect(() => {
-    if (isComplete) {
+    if (isComplete && !hasNotifiedComplete.current) {
+      hasNotifiedComplete.current = true;
       onComplete?.();
     }
   }, [isComplete, onComplete]);
@@ -208,6 +211,7 @@ export function PuzzleBoard({
     setFoundCells(new Set());
     setStatusMessage("Puzzle reset. Start again.");
     resetSelection();
+    hasNotifiedComplete.current = false;
   };
 
   return (
