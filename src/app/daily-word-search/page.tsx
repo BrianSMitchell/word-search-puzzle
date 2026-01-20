@@ -1,5 +1,5 @@
 import { AdSlot } from "@/components/AdSlot";
-import { PuzzleBoard } from "@/components/PuzzleBoard";
+import { DailyGame } from "@/components/DailyGame";
 import { ShareButton } from "@/components/ShareButton";
 import { getDailySeed, getDailyWords, getDateKey, getRecentDateKeys } from "@/lib/puzzle/daily";
 import { generatePuzzle } from "@/lib/puzzle/generator";
@@ -55,7 +55,7 @@ export default function DailyWordSearchPage() {
           </p>
         </div>
         <div className="reveal reveal-delay-1">
-          <PuzzleBoard puzzle={puzzle} title="Daily puzzle" />
+          <DailyGame puzzle={puzzle} />
         </div>
       </section>
 

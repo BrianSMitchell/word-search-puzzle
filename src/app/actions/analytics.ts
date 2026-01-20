@@ -30,3 +30,28 @@ export async function logPageView(data: { page: string; referrer: string }) {
     console.error("Unexpected error logging page view:", err);
   }
 }
+
+export async function logGameEvent(eventType: "puzzle_completed" | "puzzle_printed", metadata: any = {}) {
+  const headersList = await headers();
+  const country = headersList.get("x-vercel-ip-country") || null;
+  const region = headersList.get("x-vercel-ip-country-region") || null;
+  const city = headersList.get("x-vercel-ip-city") || null;
+
+  const supabase = await createClient();
+
+  try {
+    const { error } = await supabase.from("analytics_events").insert({
+      event_type: eventType,
+      metadata,
+      country,
+      region,
+      city,
+    });
+
+    if (error) {
+      console.error("Failed to log game event:", error);
+    }
+  } catch (err) {
+    console.error("Unexpected error logging game event:", err);
+  }
+}

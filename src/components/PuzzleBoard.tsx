@@ -1,7 +1,7 @@
 "use client";
 
 import type { Cell, Puzzle } from "@/lib/puzzle/types";
-import { useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import styles from "./PuzzleBoard.module.css";
 
 type PuzzleBoardProps = {
@@ -9,6 +9,8 @@ type PuzzleBoardProps = {
   title?: string;
   onNewPuzzle?: () => void;
   newPuzzleLabel?: string;
+  onWordFound?: (word: string) => void;
+  onComplete?: () => void;
 };
 
 type Direction = {
@@ -50,7 +52,14 @@ function buildPath(start: Cell, end: Cell, direction: Direction): Cell[] {
   return cells;
 }
 
-export function PuzzleBoard({ puzzle, title, onNewPuzzle, newPuzzleLabel }: PuzzleBoardProps) {
+export function PuzzleBoard({
+  puzzle,
+  title,
+  onNewPuzzle,
+  newPuzzleLabel,
+  onWordFound,
+  onComplete,
+}: PuzzleBoardProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const [start, setStart] = useState<Cell | null>(null);
   const [end, setEnd] = useState<Cell | null>(null);
@@ -79,6 +88,12 @@ export function PuzzleBoard({ puzzle, title, onNewPuzzle, newPuzzleLabel }: Puzz
 
   const isComplete = foundWords.size === puzzle.words.length && puzzle.words.length > 0;
 
+  useEffect(() => {
+    if (isComplete) {
+      onComplete?.();
+    }
+  }, [isComplete, onComplete]);
+
   const focusCell = (cell: Cell) => {
     const target = gridRef.current?.querySelector<HTMLButtonElement>(
       `[data-cell="${cellKey(cell)}"]`,
@@ -104,6 +119,7 @@ export function PuzzleBoard({ puzzle, title, onNewPuzzle, newPuzzleLabel }: Puzz
     setFoundWords(nextWords);
     setFoundCells(nextCells);
     setStatusMessage(`${word} found.`);
+    onWordFound?.(word);
     resetSelection();
   };
 
