@@ -1,0 +1,17 @@
+{
+  "name": "daily-insights",
+  "type": "module",
+  "scripts": {
+    "insights": "tsx daily-insights.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@octokit/rest": "^21.0.0",
+    "resend": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.7.0",
+    "typescript": "^5"
+  }
+}
