@@ -1,6 +1,7 @@
 import { AdSenseScript } from "@/components/AdSenseScript";
 import { GoogleAnalytics } from "@/components/Analytics";
 import { SupabaseAnalytics } from "@/components/Analytics/SupabaseAnalytics";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { siteUrl } from "@/lib/site";
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${bodyFont.variable} ${displayFont.variable}`}>
+        <ScrollToTop />
         <a className="skip-link" href="#main-content">
           Skip to main content
         </a>

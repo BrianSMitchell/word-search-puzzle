@@ -9,15 +9,15 @@ export function SiteHeader() {
     <header className={styles.header}>
       <div className="container">
         <div className={styles.inner}>
-          <Link className={styles.logo} href="/">
+          <Link onClick={() => window.scrollTo(0, 0)} className={styles.logo} href="/">
             Word Search Puzzle
           </Link>
           <nav className={styles.nav} aria-label="Primary">
-            <Link href="/daily-word-search">Daily Word Search</Link>
-            <Link href="/themed-word-search-puzzles">Themed Puzzles</Link>
-            <Link href="/word-search-generator">Word Search Generator</Link>
-            <Link href="/printable-word-search">Printable Puzzles</Link>
-            <Link href="/blog">Blog</Link>
+            <Link onClick={() => window.scrollTo(0, 0)} href="/daily-word-search">Daily Word Search</Link>
+            <Link onClick={() => window.scrollTo(0, 0)} href="/themed-word-search-puzzles">Themed Puzzles</Link>
+            <Link onClick={() => window.scrollTo(0, 0)} href="/word-search-generator">Word Search Generator</Link>
+            <Link onClick={() => window.scrollTo(0, 0)} href="/printable-word-search">Printable Puzzles</Link>
+            <Link onClick={() => window.scrollTo(0, 0)} href="/blog">Blog</Link>
           </nav>
           <ThemeControls />
         </div>
