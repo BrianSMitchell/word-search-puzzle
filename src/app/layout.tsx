@@ -1,13 +1,15 @@
-import type { Metadata, Viewport } from "next";
-import { Fraunces, Space_Grotesk } from "next/font/google";
-import "./globals.css";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { GoogleAnalytics } from "@/components/Analytics";
 import { AdSenseScript } from "@/components/AdSenseScript";
+import { GoogleAnalytics } from "@/components/Analytics";
+import { SupabaseAnalytics } from "@/components/Analytics/SupabaseAnalytics";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { siteUrl } from "@/lib/site";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import type { Metadata, Viewport } from "next";
+import { Fraunces, Space_Grotesk } from "next/font/google";
+import { Suspense } from "react";
+import "./globals.css";
 
 const bodyFont = Space_Grotesk({
   subsets: ["latin"],
@@ -53,6 +55,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <SiteFooter />
         <GoogleAnalytics />
+        <Suspense fallback={null}>
+          <SupabaseAnalytics />
+        </Suspense>
         <Analytics />
         <SpeedInsights />
         <AdSenseScript />

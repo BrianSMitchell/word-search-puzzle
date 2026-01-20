@@ -1,12 +1,12 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
 import {
-  getThemedPageBySlug,
-  getThemedPageSeed,
-  getThemedPageSlugs,
+    getThemedPageBySlug,
+    getThemedPageSeed,
+    getThemedPageSlugs,
 } from "@/lib/puzzle/themedPages";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type ThemePageProps = {
   params: Promise<{
@@ -46,7 +46,7 @@ export default async function ThemedWordSearchPage({ params }: ThemePageProps) {
   return (
     <div className="page">
       <section className="hero">
-        <div className="reveal">
+        <div className="reveal no-print">
           <span className="badge">{theme.name} puzzles</span>
           <h1>{theme.title}</h1>
           {theme.intro.map((paragraph) => (
@@ -85,7 +85,7 @@ export default async function ThemedWordSearchPage({ params }: ThemePageProps) {
         </div>
       </section>
 
-      <section className="card prose">
+      <section className="card prose no-print">
         <h2>About this puzzle</h2>
         <p>
           {theme.description} The grid size is {theme.gridSize}×{theme.gridSize}, and we keep the word list contained to {theme.words.length} themed entries so completes stay quick.
@@ -95,7 +95,7 @@ export default async function ThemedWordSearchPage({ params }: ThemePageProps) {
         </p>
       </section>
 
-      <section className="card">
+      <section className="card no-print">
         <h3>Word list</h3>
         <div className="word-list-grid">
           {theme.words.map((word) => (
@@ -106,7 +106,7 @@ export default async function ThemedWordSearchPage({ params }: ThemePageProps) {
         </div>
       </section>
 
-      <section className="card prose">
+      <section className="card prose no-print">
         <h2>Who these puzzles are for</h2>
         <ul>
           {theme.whoThisFor.map((item) => (
@@ -115,7 +115,7 @@ export default async function ThemedWordSearchPage({ params }: ThemePageProps) {
         </ul>
       </section>
 
-      <section className="card prose">
+      <section className="card prose no-print">
         <h2>Need more puzzles?</h2>
         <p>
           Play the <Link href="/daily-word-search">Daily Word Search</Link>, build your own grid in the{" "}

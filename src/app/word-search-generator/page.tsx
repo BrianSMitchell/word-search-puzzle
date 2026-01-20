@@ -1,7 +1,7 @@
-import Link from "next/link";
-import type { Metadata } from "next";
 import { AdSlot } from "@/components/AdSlot";
 import { WordSearchGenerator } from "@/components/WordSearchGenerator";
+import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Word Search Generator - Make Your Own Free Puzzle",
@@ -27,7 +27,7 @@ export default async function WordSearchGeneratorPage({ searchParams }: WordSear
   return (
     <div className="page">
       <section className="hero">
-        <div className="reveal">
+        <div className="reveal no-print">
           <span className="badge">Word search generator</span>
           <h1>Word Search Generator</h1>
           <p>
@@ -49,7 +49,7 @@ export default async function WordSearchGeneratorPage({ searchParams }: WordSear
         </div>
       </section>
 
-      <div className="page-grid">
+      <div className="page-grid no-print">
         <div className="page-main">
           <AdSlot slot={inlineSlot} />
           <section className="card prose">

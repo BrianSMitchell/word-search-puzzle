@@ -1,10 +1,10 @@
-import Link from "next/link";
-import type { Metadata } from "next";
 import { AdSlot } from "@/components/AdSlot";
 import { PuzzleBoard } from "@/components/PuzzleBoard";
 import { ShareButton } from "@/components/ShareButton";
-import { generatePuzzle } from "@/lib/puzzle/generator";
 import { getDailySeed, getDailyWords, getDateKey, getRecentDateKeys } from "@/lib/puzzle/daily";
+import { generatePuzzle } from "@/lib/puzzle/generator";
+import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Daily Word Search Puzzle - New Free Puzzle Every Day",
@@ -32,7 +32,7 @@ export default function DailyWordSearchPage() {
   return (
     <div className="page">
       <section className="hero">
-        <div className="reveal">
+        <div className="reveal no-print">
           <span className="badge">Daily word search</span>
           <h1>Daily Word Search Puzzle</h1>
           <p>
@@ -59,7 +59,7 @@ export default function DailyWordSearchPage() {
         </div>
       </section>
 
-      <div className="page-grid">
+      <div className="page-grid no-print">
         <div className="page-main">
           <AdSlot slot={inlineSlot} />
           <section className="card prose">

@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { generatePuzzle } from "@/lib/puzzle/generator";
 import { seedFromString } from "@/lib/puzzle/rng";
 import { normalizeWords } from "@/lib/puzzle/words";
+import { useMemo, useState } from "react";
 import { PuzzleBoard } from "./PuzzleBoard";
 
 const DEFAULT_WORDS = `ocean
@@ -63,7 +63,7 @@ export function WordSearchGenerator({
 
   return (
     <div className="card">
-      <div className="form-grid">
+      <div className="form-grid no-print">
         {initialThemeName?.trim() ? (
           <p className="badge">Custom theme: {initialThemeName.trim()}</p>
         ) : null}
@@ -123,7 +123,7 @@ export function WordSearchGenerator({
           </button>
         </div>
         {!isPuzzleValid ? (
-          <p className="badge">
+          <p className="badge no-print">
             Some words do not fit in the grid. Try fewer words or a larger size.
           </p>
         ) : null}
@@ -138,7 +138,7 @@ export function WordSearchGenerator({
           />
         </div>
       ) : (
-        <p className="badge" style={{ marginTop: "1.5rem" }}>
+        <p className="badge no-print" style={{ marginTop: "1.5rem" }}>
           Add at least two words and keep them short enough to fit the grid.
         </p>
       )}

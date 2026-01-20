@@ -371,6 +371,7 @@ textarea {
 @media print {
   body {
     background: #ffffff;
+    color: #000000;
   }
 
   header,
@@ -378,12 +379,24 @@ textarea {
   .theme-controls,
   .page-aside,
   .ad-slot,
-  .button {
+  .button,
+  .no-print {
     display: none !important;
   }
 
   .site-main {
     padding: 0;
+  }
+
+  .card,
+  .board {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .hero {
+    display: block !important;
   }
 }
 

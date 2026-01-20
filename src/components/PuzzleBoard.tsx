@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useRef, useState, type KeyboardEvent } from "react";
 import type { Cell, Puzzle } from "@/lib/puzzle/types";
+import { useMemo, useRef, useState, type KeyboardEvent } from "react";
 import styles from "./PuzzleBoard.module.css";
 
 type PuzzleBoardProps = {
@@ -249,7 +249,7 @@ export function PuzzleBoard({ puzzle, title, onNewPuzzle, newPuzzleLabel }: Puzz
               ))}
             </ul>
           </div>
-          <div className={styles.controls}>
+          <div className={`${styles.controls} no-print`}>
             <button className={styles.resetButton} type="button" onClick={handleReset}>
               Reset puzzle
             </button>
