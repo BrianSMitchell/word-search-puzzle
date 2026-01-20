@@ -228,7 +228,7 @@ export function PuzzleBoard({
           ref={gridRef}
           role="grid"
           aria-label="Word search puzzle grid"
-          style={{ gridTemplateColumns: `repeat(${puzzle.size}, 1fr)` }}
+          style={{ gridTemplateColumns: `repeat(${puzzle.size}, minmax(0, 1fr))` }}
         >
           {puzzle.grid.map((row, rowIndex) =>
             row.map((letter, colIndex) => {
