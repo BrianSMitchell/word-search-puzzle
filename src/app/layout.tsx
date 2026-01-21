@@ -32,9 +32,6 @@ export const metadata: Metadata = {
   },
   description:
     "Free word search puzzles online. Play instantly with no download. Daily puzzles, printable layouts, and a fast word search generator.",
-  alternates: {
-    canonical: siteUrl,
-  },
 };
 
 export const viewport: Viewport = {
