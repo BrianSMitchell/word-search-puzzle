@@ -1,4 +1,5 @@
 import { seedFromString } from "./rng";
+import { getWordsByTags } from "./wordPool";
 import { normalizeWords } from "./words";
 
 export type ThemeCategory =
@@ -8,13 +9,14 @@ export type ThemeCategory =
   | "nature"
   | "audience"
   | "difficulty"
-  | "lifestyle";
+  | "lifestyle"
+  | "general";
 
 export type ThemeAudience = "kids" | "adults" | "seniors" | null;
 
 export type ThemeDifficulty = "easy" | "medium" | "hard";
 
-export type ThemedPageConfig = {
+export type RawThemedPageConfig = {
   slug: string;
   name: string;
   title: string;
@@ -22,22 +24,21 @@ export type ThemedPageConfig = {
   gridSize: number;
   allowDiagonal: boolean;
   allowBackwards: boolean;
-  words: string[];
+  wordTags: string[];
   intro: string[];
   whoThisFor: string[];
   siblingSlugs: string[];
-  // New SEO metadata fields
   category: ThemeCategory;
   audience: ThemeAudience;
   tags: string[];
   difficultyDefault: ThemeDifficulty;
 };
 
-type ThemedPageRaw = Omit<ThemedPageConfig, "words"> & {
+export type ThemedPageConfig = RawThemedPageConfig & {
   words: string[];
 };
 
-const RAW_THEMED_PAGES: ThemedPageRaw[] = [
+const RAW_THEMED_PAGES: RawThemedPageConfig[] = [
   // ============================================
   // EXISTING THEMES (Updated with new metadata)
   // ============================================
@@ -50,10 +51,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "lion", "tiger", "elephant", "giraffe", "zebra", "otter",
-      "panda", "koala", "dolphin", "penguin", "rabbit", "whale", "hawk",
-    ],
+    wordTags: ["animals"],
     intro: [
       "Play animal word search puzzles with friendly pets and curious wildlife right in your browser.",
       "Generate a new grid instantly or print a worksheet for classrooms, clubs, or animal lovers looking for a quick, themed challenge.",
@@ -78,10 +76,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 12,
     allowDiagonal: false,
     allowBackwards: false,
-    words: [
-      "ball", "story", "smile", "learn", "friend", "crayon",
-      "play", "music", "giggle", "jump", "share", "color", "teddy", "lunch",
-    ],
+    wordTags: ["kids"],
     intro: [
       "Kids word search puzzles keep the letters large and the vocabulary simple so children stay engaged from start to finish.",
       "Instantly refresh the grid, print a worksheet, or send the link to classmates for a quick, joyful activity.",
@@ -106,10 +101,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "holiday", "celebrate", "family", "lights", "cheer", "gift",
-      "snowman", "reindeer", "tradition", "parade", "ornament", "travel", "candy", "joy",
-    ],
+    wordTags: ["holidays"],
     intro: [
       "Holiday word search puzzles keep seasonal words front and center so every game feels timely and festive.",
       "Use the generator to refresh the board, print a worksheet for the next party, or share the page as a cheerful activity for friends and students.",
@@ -134,10 +126,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 10,
     allowDiagonal: false,
     allowBackwards: false,
-    words: [
-      "puzzle", "calm", "focus", "letters", "grid", "word",
-      "play", "happy", "relax", "rest", "smile", "learn",
-    ],
+    wordTags: ["easy"],
     intro: [
       "Easy word searches are slow-paced puzzles with generous spacing and simple words.",
       "Perfect for seniors, new players, or anyone who prefers a low-pressure session before jumping into more challenging themes.",
@@ -162,10 +151,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 12,
     allowDiagonal: false,
     allowBackwards: false,
-    words: [
-      "large", "print", "letters", "bold", "clear", "easy",
-      "calm", "comfort", "slow", "steady", "focus", "bright",
-    ],
+    wordTags: ["large-print"],
     intro: [
       "Large print word search puzzles boost readability with generous spacing and crisp letters.",
       "They are ideal for care centers, therapy groups, or any player who wants a roomy grid that feels comfortable on the eyes.",
@@ -194,10 +180,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 10,
     allowDiagonal: false,
     allowBackwards: false,
-    words: [
-      "cat", "dog", "sun", "mom", "dad", "red",
-      "blue", "one", "two", "big", "run", "hop",
-    ],
+    wordTags: ["kindergarten"],
     intro: [
       "Kindergarten word searches use short, familiar words that young learners can recognize and find with confidence.",
       "Print these puzzles for circle time, send home for practice, or let little ones play right on the screen.",
@@ -222,10 +205,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 12,
     allowDiagonal: false,
     allowBackwards: false,
-    words: [
-      "the", "and", "said", "have", "come", "some",
-      "what", "when", "there", "your", "were", "about",
-    ],
+    wordTags: ["first-grade"],
     intro: [
       "First grade word searches focus on sight words that students encounter every day in reading and writing.",
       "Use these puzzles as morning work, literacy stations, or take-home practice sheets.",
@@ -250,10 +230,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 12,
     allowDiagonal: true,
     allowBackwards: false,
-    words: [
-      "because", "friend", "people", "please", "school", "should",
-      "always", "before", "around", "together", "thought", "through",
-    ],
+    wordTags: ["second-grade"],
     intro: [
       "Second grade word searches introduce longer words and diagonal directions to build searching skills.",
       "Great for independent work time, homework packets, or enrichment activities.",
@@ -278,10 +255,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "receive", "believe", "separate", "necessary", "occurrence", "accommodate",
-      "definitely", "occasionally", "environment", "beginning", "immediately", "conscience",
-    ],
+    wordTags: ["spelling"],
     intro: [
       "Spelling word searches turn tricky words into a fun game, helping students visualize correct letter patterns.",
       "Use these puzzles before spelling tests or as enrichment for confident spellers.",
@@ -306,10 +280,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "benevolent", "pragmatic", "eloquent", "resilient", "meticulous", "ambiguous",
-      "profound", "arbitrary", "coherent", "diligent", "empirical", "fallacy",
-    ],
+    wordTags: ["vocabulary"],
     intro: [
       "Vocabulary word searches expose players to advanced words in a low-stakes, engaging format.",
       "Ideal for SAT prep, ESL learners, or anyone who loves expanding their word knowledge.",
@@ -338,10 +309,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "snowman", "sleigh", "carol", "gingerbread", "stocking", "evergreen",
-      "candle", "reindeer", "northpole", "jingle", "ornament", "mistletoe",
-    ],
+    wordTags: ["christmas"],
     intro: [
       "Christmas word searches bring the magic of the season into every puzzle, with words from carols, traditions, and winter fun.",
       "Perfect for holiday parties, classroom celebrations, or quiet moments by the fire.",
@@ -366,10 +334,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "witch", "ghost", "vampire", "pumpkin", "skeleton", "spider",
-      "costume", "haunted", "monster", "zombie", "candy", "lantern",
-    ],
+    wordTags: ["halloween"],
     intro: [
       "Halloween word searches are packed with spooky vocabulary that makes October puzzles extra fun.",
       "Use them for classroom parties, trick-or-treat downtime, or family game nights.",
@@ -394,10 +359,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "turkey", "grateful", "harvest", "pilgrim", "cornucopia", "feast",
-      "autumn", "pumpkin", "thankful", "family", "blessing", "gather",
-    ],
+    wordTags: ["thanksgiving"],
     intro: [
       "Thanksgiving word searches celebrate the season of gratitude with words about food, family, and fall traditions.",
       "Print puzzles for the kids' table or play together while the turkey roasts.",
@@ -422,10 +384,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 12,
     allowDiagonal: true,
     allowBackwards: false,
-    words: [
-      "heart", "love", "friend", "candy", "roses", "cupid",
-      "sweet", "card", "hug", "kiss", "pink", "romance",
-    ],
+    wordTags: ["valentines-day"],
     intro: [
       "Valentine's Day word searches spread love with vocabulary about friendship, hearts, and sweet treats.",
       "Perfect for classroom exchanges, party activities, or a quiet puzzle with someone special.",
@@ -450,10 +409,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 12,
     allowDiagonal: true,
     allowBackwards: false,
-    words: [
-      "bunny", "eggs", "spring", "basket", "chick", "tulip",
-      "bloom", "hunt", "pastel", "jelly", "garden", "sunday",
-    ],
+    wordTags: ["easter"],
     intro: [
       "Easter word searches hop into spring with words about bunnies, eggs, and blooming gardens.",
       "Great for egg hunt breaks, Sunday school activities, or springtime classroom fun.",
@@ -482,10 +438,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "pasta", "pizza", "salad", "bread", "cheese", "soup",
-      "spice", "noodle", "tomato", "baker", "recipe", "kitchen",
-    ],
+    wordTags: ["food"],
     intro: [
       "Food word searches serve up tasty vocabulary from kitchens, restaurants, and cuisines around the world.",
       "Perfect for cooking classes, nutrition lessons, or anyone who loves food-themed puzzles.",
@@ -510,10 +463,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "soccer", "basketball", "baseball", "football", "tennis", "golf",
-      "hockey", "swimming", "runner", "stadium", "coach", "trophy",
-    ],
+    wordTags: ["sports"],
     intro: [
       "Sports word searches score big with vocabulary from fields, courts, and arenas around the world.",
       "Great for PE classes, sports camps, or fans who love game-day puzzles.",
@@ -538,10 +488,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "forest", "mountain", "river", "ocean", "meadow", "canyon",
-      "desert", "glacier", "valley", "sunrise", "weather", "season",
-    ],
+    wordTags: ["nature"],
     intro: [
       "Nature word searches connect you to the outdoors with vocabulary about landscapes, weather, and ecosystems.",
       "Perfect for science classes, outdoor education, or nature enthusiasts.",
@@ -566,10 +513,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 10,
     allowDiagonal: false,
     allowBackwards: false,
-    words: [
-      "red", "blue", "green", "yellow", "orange", "purple",
-      "pink", "brown", "black", "white", "gray", "rainbow",
-    ],
+    wordTags: ["colors"],
     intro: [
       "Colors word searches help young learners recognize and spell color names in a fun, interactive way.",
       "Great for art class, preschool, or any activity where colors take center stage.",
@@ -598,10 +542,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 12,
     allowDiagonal: false,
     allowBackwards: false,
-    words: [
-      "garden", "family", "music", "sunset", "peace", "memory",
-      "wisdom", "gentle", "story", "comfort", "friend", "nature",
-    ],
+    wordTags: ["seniors"],
     intro: [
       "Word searches for seniors feature large, readable letters and calming vocabulary for a relaxing puzzle experience.",
       "Ideal for care facilities, senior centers, or quiet time at home.",
@@ -626,10 +567,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 18,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "accomplishment", "extraordinary", "sophisticated", "enthusiastic", "determination", "consciousness",
-      "philosophical", "unprecedented", "approximately", "infrastructure", "comprehensive", "revolutionary",
-    ],
+    wordTags: ["hard"],
     intro: [
       "Hard word searches push your skills with oversized grids, lengthy words, and every direction enabled.",
       "Perfect for puzzle veterans who want a real challenge.",
@@ -654,10 +592,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 14,
     allowDiagonal: true,
     allowBackwards: true,
-    words: [
-      "memory", "focus", "logic", "puzzle", "thinking", "pattern",
-      "problem", "solution", "challenge", "mental", "cognitive", "exercise",
-    ],
+    wordTags: ["brain-games"],
     intro: [
       "Brain games word searches combine fun with mental exercise, keeping your mind active and engaged.",
       "Perfect for daily cognitive workouts or anyone who believes puzzles keep the brain young.",
@@ -682,10 +617,7 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     gridSize: 12,
     allowDiagonal: false,
     allowBackwards: false,
-    words: [
-      "calm", "peace", "gentle", "quiet", "serene", "tranquil",
-      "breeze", "sunset", "harmony", "comfort", "soothe", "rest",
-    ],
+    wordTags: ["relaxing"],
     intro: [
       "Relaxing word searches offer a peaceful escape with calming words and easy-going gameplay.",
       "Perfect for winding down, stress relief, or a quiet moment before bed.",
@@ -701,12 +633,40 @@ const RAW_THEMED_PAGES: ThemedPageRaw[] = [
     tags: ["calm", "peaceful", "stress-relief", "mindful"],
     difficultyDefault: "easy",
   },
+  {
+    slug: "general-english",
+    name: "General English",
+    title: "General English Word Search",
+    description:
+      "A massive word search pool featuring 3,000 common English words. Perfect for daily practice and expanding your vocabulary with familiar terms.",
+    gridSize: 16,
+    allowDiagonal: true,
+    allowBackwards: true,
+    wordTags: ["all"],
+    intro: [
+      "Our General English word search draws from a pool of 3,000 core words used in daily conversation and writing.",
+      "Every time you play, you'll get a fresh selection of familiar words, providing near-infinite variety for your practice.",
+    ],
+    whoThisFor: [
+      "ESL students looking for core vocabulary practice",
+      "Puzzle fans who want a standard English challenge",
+      "Teachers needing a broad word base for classroom activities",
+    ],
+    siblingSlugs: ["vocabulary", "hard", "brain-games"],
+    category: "general",
+    audience: null,
+    tags: ["dictionary", "common-words", "standard", "practice"],
+    difficultyDefault: "medium",
+  },
 ];
 
-export const THEMED_PAGES = RAW_THEMED_PAGES.map((page) => ({
-  ...page,
-  words: normalizeWords(page.words, page.gridSize),
-}));
+export const THEMED_PAGES: ThemedPageConfig[] = RAW_THEMED_PAGES.map((page) => {
+  const words = getWordsByTags(page.wordTags);
+  return {
+    ...page,
+    words: normalizeWords(words, page.gridSize),
+  };
+});
 
 export function getThemedPageBySlug(slug: string) {
   return THEMED_PAGES.find((page) => page.slug === slug);

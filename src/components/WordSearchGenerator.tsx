@@ -1,8 +1,9 @@
 "use client";
 
+import { useSound } from "@/hooks/useSound";
 import { generatePuzzle } from "@/lib/puzzle/generator";
 import { seedFromString } from "@/lib/puzzle/rng";
-import { THEMES } from "@/lib/puzzle/themes";
+import { THEMED_PAGES } from "@/lib/puzzle/themedPages";
 import { normalizeWords } from "@/lib/puzzle/words";
 import { useMemo, useState } from "react";
 import { PuzzleBoard } from "./PuzzleBoard";
@@ -34,6 +35,9 @@ export function WordSearchGenerator({
   const [allowDiagonal, setAllowDiagonal] = useState(true);
   const [allowBackwards, setAllowBackwards] = useState(true);
   const [generation, setGeneration] = useState(0);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
+  const [selectedTheme, setSelectedTheme] = useState<string>("random");
+  const { playSound } = useSound(isSoundEnabled);
 
   const normalizedWords = useMemo(() => {
     const list = rawWords.split(/[\n,]+/).map((word) => word.trim());
@@ -41,12 +45,26 @@ export function WordSearchGenerator({
   }, [rawWords, gridSize]);
 
   const handleAutoFill = () => {
-    // Collect all words from all themes
-    const pool = THEMES.flatMap(t => t.words);
-    // Shuffle
-    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    let pool: string[] = [];
+    
+    if (selectedTheme === "random") {
+      pool = THEMED_PAGES.flatMap(t => t.words);
+    } else {
+      const theme = THEMED_PAGES.find(t => t.slug === selectedTheme);
+      if (theme) pool = theme.words;
+    }
+
+    if (pool.length === 0) return;
+
+    // Use a more robust shuffle to ensure different results each click
+    const shuffled = [...pool];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    
     // Take autoCount words
-    const selected = shuffled.slice(0, Math.min(autoCount, 30));
+    const selected = shuffled.slice(0, Math.min(autoCount, 50));
     setRawWords(selected.join("\n"));
     setGeneration((g) => g + 1);
   };
@@ -83,21 +101,54 @@ export function WordSearchGenerator({
           ) : null}
           
           <div className="field">
-            <label htmlFor="auto-count">Auto-generate random words</label>
+            <label htmlFor="theme-select">Choose a theme to auto-fill</label>
             <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-              <input
-                id="auto-count"
-                type="number"
-                min="2"
-                max="30"
-                value={autoCount}
-                onChange={(e) => setAutoCount(parseInt(e.target.value) || 0)}
-                style={{ width: "80px" }}
-              />
+              <select
+                id="theme-select"
+                className="select"
+                value={selectedTheme}
+                onChange={(e) => setSelectedTheme(e.target.value)}
+                style={{ flex: 1 }}
+              >
+                <option value="random">Random Mix (All Themes)</option>
+                <optgroup label="Education">
+                  {THEMED_PAGES.filter(p => p.category === "education").map(p => (
+                    <option key={p.slug} value={p.slug}>{p.name}</option>
+                  ))}
+                </optgroup>
+                <optgroup label="Lifestyle & Fun">
+                  {THEMED_PAGES.filter(p => ["animals", "lifestyle", "nature"].includes(p.category)).map(p => (
+                    <option key={p.slug} value={p.slug}>{p.name}</option>
+                  ))}
+                </optgroup>
+                <optgroup label="Holidays">
+                  {THEMED_PAGES.filter(p => p.category === "holiday").map(p => (
+                    <option key={p.slug} value={p.slug}>{p.name}</option>
+                  ))}
+                </optgroup>
+                <optgroup label="General">
+                  {THEMED_PAGES.filter(p => p.category === "general").map(p => (
+                    <option key={p.slug} value={p.slug}>{p.name}</option>
+                  ))}
+                </optgroup>
+              </select>
               <button className="button button-outline" type="button" onClick={handleAutoFill}>
-                Fill word list
+                Fill list
               </button>
             </div>
+          </div>
+
+          <div className="field">
+            <label htmlFor="auto-count">Number of words to generate</label>
+            <input
+              id="auto-count"
+              type="number"
+              min="2"
+              max="30"
+              value={autoCount}
+              onChange={(e) => setAutoCount(parseInt(e.target.value) || 0)}
+              style={{ width: "100%" }}
+            />
           </div>
 
           <div className="field">
@@ -167,9 +218,34 @@ export function WordSearchGenerator({
             <div className="reveal reveal-delay-1">
               <PuzzleBoard
                 puzzle={puzzle}
-                title="Your custom puzzle"
                 onNewPuzzle={() => setGeneration((value) => value + 1)}
                 newPuzzleLabel="New layout"
+                onWordFound={() => playSound("/sounds/pop.mp3")}
+                onComplete={() => playSound("/sounds/win.mp3")}
+                sidecarFooter={
+                  <div className="flex items-center justify-between px-2 pt-2">
+                    <div className="text-[11px] text-[var(--muted)] uppercase tracking-widest font-black">
+                      Sound Support
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsSoundEnabled(!isSoundEnabled)}
+                      style={{ 
+                        backgroundColor: 'var(--accent)', 
+                        color: '#000000',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+                        border: '2px solid rgba(0,0,0,0.1)'
+                      }}
+                      className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.2em] py-3 px-5 rounded-2xl transition-all hover:scale-105 active:scale-95 hover:brightness-110"
+                    >
+                      {isSoundEnabled ? (
+                        <><span className="text-xl">🔊</span> On</>
+                      ) : (
+                        <><span className="text-xl opacity-70">🔇</span> Off</>
+                      )}
+                    </button>
+                  </div>
+                }
               />
             </div>
           ) : (

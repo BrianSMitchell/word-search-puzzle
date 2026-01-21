@@ -11,17 +11,19 @@ export const metadata: Metadata = {
 
 // Group themes by category with display info
 const CATEGORY_CONFIG: Record<ThemeCategory, { icon: string; label: string; order: number }> = {
-  education: { icon: "📚", label: "Education & Learning", order: 1 },
-  holiday: { icon: "🎉", label: "Holidays & Seasons", order: 2 },
-  animals: { icon: "🐾", label: "Animals & Nature", order: 3 },
-  nature: { icon: "🌿", label: "Nature & Outdoors", order: 4 },
-  lifestyle: { icon: "🍕", label: "Lifestyle & Fun", order: 5 },
-  audience: { icon: "👤", label: "For Specific Audiences", order: 6 },
-  difficulty: { icon: "🎯", label: "By Difficulty Level", order: 7 },
+  general: { icon: "📖", label: "General English", order: 1 },
+  education: { icon: "📚", label: "Education & Learning", order: 2 },
+  holiday: { icon: "🎉", label: "Holidays & Seasons", order: 3 },
+  animals: { icon: "🐾", label: "Animals & Nature", order: 4 },
+  nature: { icon: "🌿", label: "Nature & Outdoors", order: 5 },
+  lifestyle: { icon: "🍕", label: "Lifestyle & Fun", order: 6 },
+  audience: { icon: "👤", label: "For Specific Audiences", order: 7 },
+  difficulty: { icon: "🎯", label: "By Difficulty Level", order: 8 },
 };
 
 function groupThemesByCategory() {
   const groups: Record<ThemeCategory, typeof THEMED_PAGES> = {
+    general: [],
     education: [],
     holiday: [],
     animals: [],

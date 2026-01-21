@@ -1,3 +1,5 @@
+import { getWordsByTags } from "./wordPool";
+
 const WORD_CLEANUP = /[^a-zA-Z]/g;
 
 export function sanitizeWord(raw: string): string {
@@ -11,20 +13,7 @@ export function normalizeWords(words: string[], gridSize: number): string[] {
   return Array.from(new Set(cleaned));
 }
 
-export const HOMEPAGE_WORDS = [
-  "SEARCH",
-  "PUZZLE",
-  "BRAIN",
-  "LETTER",
-  "GRID",
-  "FIND",
-  "HUNT",
-  "CLUE",
-  "FUN",
-  "FOCUS",
-  "RELAX",
-  "PLAY",
-];
+export const HOMEPAGE_WORDS = getWordsByTags(["homepage"]);
 
 export const DAILY_WORD_SETS = [
   ["FOREST", "STREAM", "TRAIL", "LEAF", "BIRD", "BRANCH", "MOSS", "ROOTS"],
@@ -36,17 +25,4 @@ export const DAILY_WORD_SETS = [
   ["CAMPUS", "LECTURE", "STUDY", "BOOK", "NOTES", "CLASS", "QUIZ", "LAB"],
 ];
 
-export const PRINTABLE_WORDS = [
-  "CLASSROOM",
-  "TEACHER",
-  "READING",
-  "PENCIL",
-  "LESSON",
-  "STUDENT",
-  "WORKSHEET",
-  "LANGUAGE",
-  "HISTORY",
-  "SCIENCE",
-  "MATH",
-  "LIBRARY",
-];
+export const PRINTABLE_WORDS = getWordsByTags(["printable"]);

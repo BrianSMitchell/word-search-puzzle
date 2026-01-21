@@ -22,24 +22,24 @@ export function DailyGame({ puzzle }: { puzzle: Puzzle }) {
         }}
         sidecarFooter={
           <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-3 bg-muted/20 p-2.5 rounded-lg border border-border/50">
-              <span className="text-xl" role="img" aria-label="fire">🔥</span>
+            <div className="flex items-center gap-4 bg-muted/30 p-3.5 rounded-xl border-2 border-border/80 shadow-inner">
+              <span className="text-2xl drop-shadow-sm" role="img" aria-label="fire">🔥</span>
               <div>
-                <div className="font-bold text-base leading-none">
+                <div className="font-black text-lg leading-none text-[var(--text)]">
                   {stats.currentStreak} Day Streak
                 </div>
-                <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold mt-1">
+                <div className="text-[10px] text-[var(--muted)] uppercase tracking-[0.15em] font-black mt-1.5 opacity-90">
                   Keep it up!
                 </div>
               </div>
             </div>
             
-            <div className="flex items-center justify-between px-1">
+            <div className="flex items-center justify-between px-2 pt-2">
               <div>
-                <div className="font-bold text-lg leading-none">
+                <div className="font-black text-2xl leading-none text-[var(--text)]">
                   {stats.totalCompleted}
                 </div>
-                <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">
+                <div className="text-[11px] text-[var(--muted)] uppercase tracking-widest font-black mt-1">
                   Solved
                 </div>
               </div>
@@ -47,12 +47,18 @@ export function DailyGame({ puzzle }: { puzzle: Puzzle }) {
               <button
                 type="button"
                 onClick={() => setIsSoundEnabled(!isSoundEnabled)}
-                className="flex items-center gap-2.5 text-xs font-black uppercase tracking-widest py-2.5 px-4 rounded-xl transition-all border-2 border-[var(--text)] bg-[var(--surface-raised)] hover:bg-[var(--accent)] hover:text-[var(--accent-contrast)] hover:border-[var(--accent)] hover:shadow-lg shadow-md group"
+                style={{ 
+                  backgroundColor: 'var(--accent)', 
+                  color: '#000000',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+                  border: '2px solid rgba(0,0,0,0.1)'
+                }}
+                className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.2em] py-3 px-5 rounded-2xl transition-all hover:scale-105 active:scale-95 hover:brightness-110"
               >
                 {isSoundEnabled ? (
-                  <><span className="text-lg">🔊</span> <span className="text-[var(--text)] group-hover:text-[var(--accent-contrast)]">Sound On</span></>
+                  <><span className="text-xl">🔊</span> Sound On</>
                 ) : (
-                  <><span className="text-lg opacity-60">🔇</span> <span className="text-[var(--muted)] group-hover:text-[var(--accent-contrast)]">Sound Off</span></>
+                  <><span className="text-xl opacity-70">🔇</span> Sound Off</>
                 )}
               </button>
             </div>
