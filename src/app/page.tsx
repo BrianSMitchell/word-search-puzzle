@@ -1,5 +1,8 @@
 import { AdSlot } from "@/components/AdSlot";
+import { FAQSection } from "@/components/FAQSection";
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
+import { FAQSchema, GameSchema } from "@/components/Schema";
+import { getCommonFAQs } from "@/lib/puzzle/faqData";
 import { seedFromString } from "@/lib/puzzle/rng";
 import { HOMEPAGE_WORDS } from "@/lib/puzzle/words";
 import type { Metadata } from "next";
@@ -9,14 +12,38 @@ export const metadata: Metadata = {
   title: "Free Word Search Puzzles Online - Play Instantly (No Download)",
   description:
     "Play free word search puzzles online. No download, no sign-up, just fast puzzle play with daily challenges, printable grids, and a custom generator.",
+  openGraph: {
+    title: "Free Word Search Puzzles Online - Play Instantly",
+    description:
+      "Play free word search puzzles online. No download, no sign-up, just fast puzzle play with daily challenges, printable grids, and a custom generator.",
+    type: "website",
+    images: ["/api/og"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free Word Search Puzzles Online",
+    description: "Play free word search puzzles online. No download, no sign-up required.",
+    images: ["/api/og"],
+  },
 };
 
 const inlineSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_INLINE ?? "";
 const sidebarSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR ?? "";
 
 export default function HomePage() {
+  const faqs = getCommonFAQs();
+
   return (
     <div className="page">
+      {/* Schema Markup */}
+      <GameSchema
+        name="Free Word Search Puzzles Online"
+        description="Play free word search puzzles online with daily challenges, themed puzzles, printable worksheets, and a custom puzzle generator."
+        url="/"
+        genre="Word Search Puzzle"
+      />
+      <FAQSchema items={faqs} />
+
       <section className="hero hero-tool">
         <div className="reveal">
           <span className="badge">Free, online, no download</span>
@@ -95,6 +122,9 @@ export default function HomePage() {
               designed to load fast even on low-end devices.
             </p>
           </section>
+
+          {/* FAQ Section */}
+          <FAQSection items={faqs} />
         </div>
         <aside className="page-aside">
           <AdSlot slot={sidebarSlot} />

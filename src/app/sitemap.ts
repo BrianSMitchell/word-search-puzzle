@@ -1,4 +1,5 @@
 import { getAllPosts } from "@/lib/blog";
+import { getCompoundPageSlugs } from "@/lib/puzzle/compoundPages";
 import { getRecentDateKeys } from "@/lib/puzzle/daily";
 import { THEMED_PAGES } from "@/lib/puzzle/themedPages";
 import { siteUrl } from "@/lib/site";
@@ -33,6 +34,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.date),
   }));
 
+  // Compound modifier pages (long-tail keywords)
+  const compoundRoutes = getCompoundPageSlugs().map((slug) => ({
+    url: `${base}/${slug}`,
+    lastModified: new Date(),
+  }));
+
   return [
     ...staticRoutes.map((route) => ({
       url: `${base}${route}`,
@@ -41,5 +48,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...dailyRoutes,
     ...themedRoutes,
     ...blogRoutes,
+    ...compoundRoutes,
   ];
 }
