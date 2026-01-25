@@ -1,8 +1,15 @@
+import { FAQSection } from "@/components/FAQSection";
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
 import {
-    getThemedPageBySlug,
-    getThemedPageSeed,
-    getThemedPageSlugs,
+  BreadcrumbSchema,
+  FAQSchema,
+  GameSchema,
+} from "@/components/Schema";
+import { getFAQsForTheme } from "@/lib/puzzle/faqData";
+import {
+  getThemedPageBySlug,
+  getThemedPageSeed,
+  getThemedPageSlugs,
 } from "@/lib/puzzle/themedPages";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -29,6 +36,18 @@ export async function generateMetadata({ params }: ThemePageProps): Promise<Meta
   return {
     title: `${theme.title} – Free & Printable Online`,
     description: theme.description,
+    openGraph: {
+      title: `${theme.title} – Free & Printable Online`,
+      description: theme.description,
+      type: "website",
+      images: [`/api/og?theme=${themeSlug}`],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${theme.title} – Free & Printable Online`,
+      description: theme.description,
+      images: [`/api/og?theme=${themeSlug}`],
+    },
   };
 }
 
@@ -39,12 +58,37 @@ export default async function ThemedWordSearchPage({ params }: ThemePageProps) {
     notFound();
   }
 
+  const faqs = getFAQsForTheme(themeSlug);
+
   const siblings = theme.siblingSlugs
     .map((slug) => getThemedPageBySlug(slug))
     .filter((entry): entry is Exclude<typeof entry, undefined> => Boolean(entry));
 
+  const audienceLabel = theme.audience === "kids" 
+    ? "Children" 
+    : theme.audience === "seniors" 
+    ? "Seniors" 
+    : undefined;
+
   return (
     <div className="page">
+      {/* Schema Markup */}
+      <GameSchema
+        name={theme.title}
+        description={theme.description}
+        url={`/themed-word-search-puzzles/${theme.slug}`}
+        genre="Word Search Puzzle"
+        audience={audienceLabel}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Themed Puzzles", url: "/themed-word-search-puzzles" },
+          { name: theme.name, url: `/themed-word-search-puzzles/${theme.slug}` },
+        ]}
+      />
+      <FAQSchema items={faqs} />
+
       <section className="hero hero-tool">
         <div className="reveal no-print">
           <span className="badge">{theme.name} puzzles</span>
@@ -114,6 +158,9 @@ export default async function ThemedWordSearchPage({ params }: ThemePageProps) {
           ))}
         </ul>
       </section>
+
+      {/* FAQ Section */}
+      <FAQSection items={faqs} />
 
       <section className="card prose no-print">
         <h2>Need more puzzles?</h2>
