@@ -1,9 +1,8 @@
 import { AdSlot } from "@/components/AdSlot";
 import { FAQSection } from "@/components/FAQSection";
-import { PuzzlePlayer } from "@/components/PuzzlePlayer";
+import { QuickPlayChallenge } from "@/components/QuickPlayChallenge";
 import { FAQSchema, GameSchema } from "@/components/Schema";
 import { getCommonFAQs } from "@/lib/puzzle/faqData";
-import { seedFromString } from "@/lib/puzzle/rng";
 import { HOMEPAGE_WORDS } from "@/lib/puzzle/words";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -44,55 +43,53 @@ export default function HomePage() {
       />
       <FAQSchema items={faqs} />
 
-      <section className="hero hero-tool">
-        <div className="reveal">
-          <span className="badge">Free, online, no download</span>
-          <h1>Free Word Search Puzzles Online</h1>
-          <p>
-            Play a clean, modern word search puzzle right in your browser. Tap or drag
-            across letters to find hidden words, track your progress, and finish a
-            full puzzle in minutes.
-          </p>
-          <p className="hero-links">
-            Play free word search puzzles online with no accounts, no downloads, and
-            a fresh puzzle every day.
-          </p>
-          <div className="hero-actions">
-            <Link className="button button-solid" href="/daily-word-search">
-              Play the daily puzzle
-            </Link>
-            <Link className="button button-outline" href="/word-search-generator">
-              Make your own puzzle
-            </Link>
-            <Link className="button button-outline" href="/printable-word-search">
-              Printable puzzles
-            </Link>
-          </div>
-          <p className="badge">No sign-up. Works entirely in your browser.</p>
-          <p className="hero-links">
-            Explore the <Link href="/daily-word-search">Daily Word Search</Link>, browse{" "}
-            <Link href="/themed-word-search-puzzles">Themed Word Searches</Link>, build a custom grid in
-            the <Link href="/word-search-generator">Word Search Generator</Link>, or grab
-            a worksheet from{" "}
-            <Link href="/printable-word-search">Printable Word Search Puzzles</Link>.
-          </p>
-          <p className="hero-links">
-            Looking for a challenge? Try today&apos;s{" "}
-            <Link href="/daily-word-search">Daily Word Search Puzzle</Link>.
+      {/* HERO: Minimal intro + immediate puzzle */}
+      <section className="hero hero-play">
+        <div className="reveal hero-intro">
+          <span className="badge">Free • No sign-up • Play instantly</span>
+          <h1>Free Word Search Puzzles</h1>
+          <p className="hero-tagline">
+            Can you find all the hidden words before time runs out?
           </p>
         </div>
+        
+        {/* THE PUZZLE - Front and center */}
         <div className="reveal reveal-delay-1">
-          <PuzzlePlayer
-            title="Play a free word search now"
+          <QuickPlayChallenge
             config={{
-              gridSize: 12,
+              gridSize: 10,
               words: HOMEPAGE_WORDS,
               allowDiagonal: true,
               allowBackwards: true,
             }}
-            initialSeed={seedFromString("homepage")}
-            newPuzzleLabel="New puzzle"
+            timeLimitSeconds={60}
           />
+        </div>
+      </section>
+
+      {/* Quick Navigation */}
+      <section className="quick-nav reveal reveal-delay-2">
+        <div className="quick-nav-grid">
+          <Link href="/daily-word-search" className="quick-nav-card">
+            <span className="quick-nav-icon">📅</span>
+            <span className="quick-nav-label">Daily Puzzle</span>
+            <span className="quick-nav-desc">New challenge every day</span>
+          </Link>
+          <Link href="/word-search-generator" className="quick-nav-card">
+            <span className="quick-nav-icon">✏️</span>
+            <span className="quick-nav-label">Create Your Own</span>
+            <span className="quick-nav-desc">Custom word lists</span>
+          </Link>
+          <Link href="/printable-word-search" className="quick-nav-card">
+            <span className="quick-nav-icon">🖨️</span>
+            <span className="quick-nav-label">Printable</span>
+            <span className="quick-nav-desc">PDF worksheets</span>
+          </Link>
+          <Link href="/themed-word-search-puzzles" className="quick-nav-card">
+            <span className="quick-nav-icon">🎨</span>
+            <span className="quick-nav-label">Themed Puzzles</span>
+            <span className="quick-nav-desc">Animals, holidays & more</span>
+          </Link>
         </div>
       </section>
 

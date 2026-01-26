@@ -1,0 +1,210 @@
+.container {
+  width: 100%;
+}
+
+/* Challenge Header */
+.challengeHeader {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.challengeInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.challengeTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.challengeSubtitle {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Timer */
+.timerDisplay {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.timerWarning {
+  color: #e53e3e;
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.progress {
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Ready State */
+.readyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 3rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.startButton {
+  padding: 1rem 3rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 8px 24px rgba(227, 107, 79, 0.35);
+}
+
+.startButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(227, 107, 79, 0.45);
+}
+
+.startButton:active {
+  transform: translateY(0);
+}
+
+.hint {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.hint a {
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Win/Timeout States */
+.winTitle,
+.timeoutTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  margin: 0;
+}
+
+.winTitle {
+  color: #38a169;
+}
+
+.timeoutTitle {
+  color: var(--accent);
+}
+
+.winSubtitle,
+.timeoutSubtitle {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* End State */
+.endState {
+  padding: 2rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.endActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.playAgainButton {
+  padding: 0.9rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 8px 24px rgba(227, 107, 79, 0.35);
+}
+
+.playAgainButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(227, 107, 79, 0.45);
+}
+
+.dailyLink,
+.generatorLink {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.dailyLink:hover,
+.generatorLink:hover {
+  transform: translateY(-1px);
+  background: var(--accent-soft);
+}
+
+/* Sound Toggle */
+.soundToggle {
+  display: flex;
+  justify-content: center;
+}
+
+.soundButton {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.soundButton:hover {
+  background: var(--accent-soft);
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .endActions {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}

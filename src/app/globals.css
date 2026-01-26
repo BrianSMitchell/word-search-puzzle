@@ -173,6 +173,83 @@ textarea {
   gap: 0.75rem;
 }
 
+/* Hero Play variant - puzzle first */
+.hero-play {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hero-intro {
+  text-align: center;
+}
+
+.hero-tagline {
+  font-size: 1.15rem;
+  color: var(--muted);
+  margin: 0.5rem 0 0;
+}
+
+/* Quick Navigation Grid */
+.quick-nav {
+  margin-top: 0.5rem;
+}
+
+.quick-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.quick-nav-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.quick-nav-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.quick-nav-icon {
+  font-size: 1.5rem;
+}
+
+.quick-nav-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.quick-nav-desc {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .quick-nav-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .quick-nav-card {
+    padding: 1.25rem 1rem;
+  }
+  
+  .quick-nav-icon {
+    font-size: 1.75rem;
+  }
+}
+
 .word-list-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
