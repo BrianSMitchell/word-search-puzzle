@@ -1,4 +1,6 @@
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
+import { siteUrl } from "@/lib/site";
+import { ArticleSchema } from "@/components/Schema";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -32,6 +34,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${post.title} | Word Search Puzzle Blog`,
     description: post.description,
+    alternates: {
+      canonical: `${siteUrl}/blog/${slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+      publishedTime: post.date,
+      authors: [post.author],
+      tags: post.tags,
+    },
   };
 }
 
@@ -45,6 +58,16 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="page">
+      {/* Schema Markup */}
+      <ArticleSchema
+        title={post.title}
+        description={post.description}
+        slug={slug}
+        datePublished={post.date}
+        author={post.author}
+        tags={post.tags}
+      />
+
       <div className="page-grid">
         <article className="page-main">
           <header className="mb-8">

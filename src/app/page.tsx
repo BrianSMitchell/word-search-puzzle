@@ -3,6 +3,7 @@ import { FAQSection } from "@/components/FAQSection";
 import { QuickPlayChallenge } from "@/components/QuickPlayChallenge";
 import { FAQSchema, GameSchema } from "@/components/Schema";
 import { getCommonFAQs } from "@/lib/puzzle/faqData";
+import { siteUrl } from "@/lib/site";
 import { HOMEPAGE_WORDS } from "@/lib/puzzle/words";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -11,6 +12,9 @@ export const metadata: Metadata = {
   title: "Free Word Search Puzzles Online - Play Instantly (No Download)",
   description:
     "Play free word search puzzles online. No download, no sign-up, just fast puzzle play with daily challenges, printable grids, and a custom generator.",
+  alternates: {
+    canonical: siteUrl,
+  },
   openGraph: {
     title: "Free Word Search Puzzles Online - Play Instantly",
     description:
