@@ -256,6 +256,176 @@ export const COMPOUND_PAGES: CompoundPageConfig[] = [
     ],
     audienceLabel: "Experienced Puzzlers",
   },
+
+  // Easter combinations
+  {
+    slug: "easy-easter-word-search",
+    title: "Easy Easter Word Search Puzzles",
+    description:
+      "Easy Easter word search puzzles with spring vocabulary and simple gameplay. Perfect for young children and Easter celebrations.",
+    h1: "Easy Easter Word Search Puzzles",
+    baseTheme: "easter",
+    gridSize: 10,
+    allowDiagonal: false,
+    allowBackwards: false,
+    intro: [
+      "Easy Easter word searches bring springtime fun with bunnies, eggs, and simple vocabulary kids can find with confidence.",
+      "Perfect for Easter baskets, Sunday school, or any spring celebration.",
+    ],
+    audienceLabel: "Children",
+  },
+  {
+    slug: "easter-word-search-for-kids",
+    title: "Easter Word Search Puzzles for Kids",
+    description:
+      "Easter word search puzzles for kids featuring bunnies, eggs, and spring vocabulary. Free online and printable for Easter activities.",
+    h1: "Easter Word Search Puzzles for Kids",
+    baseTheme: "easter",
+    gridSize: 10,
+    allowDiagonal: false,
+    allowBackwards: false,
+    intro: [
+      "Easter word searches for kids feature spring vocabulary that children love—bunnies, eggs, and blooming flowers.",
+      "Great for Easter parties, classroom celebrations, or keeping kids busy during egg hunts.",
+    ],
+    audienceLabel: "Children (Ages 5-10)",
+  },
+  {
+    slug: "printable-easter-word-search",
+    title: "Printable Easter Word Search Puzzles",
+    description:
+      "Free printable Easter word search puzzles for spring celebrations, classroom activities, and Easter parties. Print instantly.",
+    h1: "Printable Easter Word Search Puzzles",
+    baseTheme: "easter",
+    intro: [
+      "Printable Easter word searches are ready for spring classroom activities, church events, and family egg hunts.",
+      "Print clean, colorful worksheets that bring spring vocabulary to life on paper.",
+    ],
+  },
+
+  // Valentine's Day combinations
+  {
+    slug: "easy-valentines-day-word-search",
+    title: "Easy Valentine's Day Word Search Puzzles",
+    description:
+      "Easy Valentine's Day word search puzzles with love and friendship vocabulary. Simple gameplay for classroom exchanges and parties.",
+    h1: "Easy Valentine's Day Word Search Puzzles",
+    baseTheme: "valentines-day",
+    gridSize: 10,
+    allowDiagonal: false,
+    allowBackwards: false,
+    intro: [
+      "Easy Valentine's Day word searches spread love with simple vocabulary about hearts, friendship, and caring.",
+      "Perfect for classroom Valentine exchanges or sweet puzzle time with someone special.",
+    ],
+    audienceLabel: "Children",
+  },
+  {
+    slug: "valentines-word-search-for-kids",
+    title: "Valentine's Day Word Search Puzzles for Kids",
+    description:
+      "Valentine's Day word search puzzles for kids with hearts, love, and friendship vocabulary. Free printable and online play.",
+    h1: "Valentine's Day Word Search Puzzles for Kids",
+    baseTheme: "valentines-day",
+    gridSize: 10,
+    allowDiagonal: false,
+    allowBackwards: false,
+    intro: [
+      "Valentine's word searches for kids celebrate friendship and caring with vocabulary that warms the heart.",
+      "Great for February classroom activities, party favors, or quiet time with loved ones.",
+    ],
+    audienceLabel: "Children",
+  },
+  {
+    slug: "printable-valentines-word-search",
+    title: "Printable Valentine's Day Word Search Puzzles",
+    description:
+      "Free printable Valentine's Day word search puzzles for classroom exchanges, party activities, and February fun.",
+    h1: "Printable Valentine's Day Word Search Puzzles",
+    baseTheme: "valentines-day",
+    intro: [
+      "Printable Valentine's word searches make perfect classroom handouts, party activities, or heartfelt gifts.",
+      "Download clean worksheets featuring love and friendship vocabulary that prints beautifully.",
+    ],
+  },
+
+  // Sports for kids
+  {
+    slug: "sports-word-search-for-kids",
+    title: "Sports Word Search Puzzles for Kids",
+    description:
+      "Sports word search puzzles for kids with athletics vocabulary and easy gameplay. Perfect for PE class and sports camps.",
+    h1: "Sports Word Search Puzzles for Kids",
+    baseTheme: "sports",
+    gridSize: 10,
+    allowDiagonal: false,
+    allowBackwards: false,
+    intro: [
+      "Sports word searches for kids feature favorite games and athletics vocabulary in an easy-to-play format.",
+      "Great for PE class, sports camps, or young athletes who love game-day puzzles.",
+    ],
+    audienceLabel: "Children",
+  },
+  {
+    slug: "easy-sports-word-search",
+    title: "Easy Sports Word Search Puzzles",
+    description:
+      "Easy sports word search puzzles with athletics vocabulary and beginner-friendly gameplay. No diagonal or backwards words.",
+    h1: "Easy Sports Word Search Puzzles",
+    baseTheme: "sports",
+    gridSize: 10,
+    allowDiagonal: false,
+    allowBackwards: false,
+    intro: [
+      "Easy sports word searches bring the excitement of athletics to puzzle time with simple, straightforward gameplay.",
+      "Perfect for young sports fans or anyone who wants a relaxing game-themed puzzle.",
+    ],
+    audienceLabel: "Children and Beginners",
+  },
+
+  // Nature for kids
+  {
+    slug: "nature-word-search-for-kids",
+    title: "Nature Word Search Puzzles for Kids",
+    description:
+      "Nature word search puzzles for kids with outdoor and environment vocabulary. Perfect for science class and nature walks.",
+    h1: "Nature Word Search Puzzles for Kids",
+    baseTheme: "nature",
+    gridSize: 10,
+    allowDiagonal: false,
+    allowBackwards: false,
+    intro: [
+      "Nature word searches for kids explore the outdoors with vocabulary about trees, weather, and ecosystems.",
+      "Perfect for science class, outdoor education, or young nature enthusiasts.",
+    ],
+    audienceLabel: "Children",
+  },
+  {
+    slug: "printable-nature-word-search",
+    title: "Printable Nature Word Search Puzzles",
+    description:
+      "Free printable nature word search puzzles with outdoor vocabulary. Perfect for science class and environmental education.",
+    h1: "Printable Nature Word Search Puzzles",
+    baseTheme: "nature",
+    intro: [
+      "Printable nature word searches are ready for science lessons, outdoor education, and environmental activities.",
+      "Download clean worksheets featuring trees, weather, and ecosystems vocabulary.",
+    ],
+  },
+
+  // Food combinations
+  {
+    slug: "printable-food-word-search",
+    title: "Printable Food Word Search Puzzles",
+    description:
+      "Free printable food word search puzzles with cooking and cuisine vocabulary. Perfect for nutrition class and culinary arts.",
+    h1: "Printable Food Word Search Puzzles",
+    baseTheme: "food",
+    intro: [
+      "Printable food word searches serve up tasty vocabulary for nutrition lessons, cooking class, and food-themed activities.",
+      "Download clean worksheets that print beautifully for classroom or home use.",
+    ],
+  },
 ];
 
 export function getCompoundPageBySlug(slug: string): (CompoundPageConfig & { words: string[] }) | undefined {
