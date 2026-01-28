@@ -1,4 +1,5 @@
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
+import { GameSchema } from "@/components/Schema";
 import { getDifficultyBySlug, getDifficultySeed } from "@/lib/puzzle/difficulties";
 import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
@@ -22,6 +23,12 @@ export default function MediumWordSearchPage() {
 
   return (
     <div className="page">
+      <GameSchema
+        name="Medium Word Search Puzzle"
+        description="Play a medium word search puzzle online with diagonal words and a larger grid. Free and fast with no download."
+        url="/medium-word-search"
+        genre="Word Search Puzzle"
+      />
       <section className="hero hero-tool">
         <div className="reveal">
           <span className="badge">Medium word search</span>

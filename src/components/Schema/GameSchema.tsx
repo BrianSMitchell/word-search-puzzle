@@ -34,13 +34,6 @@ export function GameSchema({
       price: "0",
       priceCurrency: "USD",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "1247",
-      bestRating: "5",
-      worstRating: "1",
-    },
   };
 
   if (audience) {

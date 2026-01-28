@@ -1,4 +1,5 @@
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
+import { GameSchema } from "@/components/Schema";
 import { getDifficultyBySlug, getDifficultySeed } from "@/lib/puzzle/difficulties";
 import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
@@ -22,6 +23,13 @@ export default function EasyWordSearchPage() {
 
   return (
     <div className="page">
+      <GameSchema
+        name="Easy Word Search Puzzle"
+        description="Play an easy word search puzzle online. Short words, straight lines, and a beginner-friendly grid with no download."
+        url="/easy-word-search"
+        genre="Word Search Puzzle"
+        audience="Beginners"
+      />
       <section className="hero hero-tool">
         <div className="reveal">
           <span className="badge">Easy word search</span>

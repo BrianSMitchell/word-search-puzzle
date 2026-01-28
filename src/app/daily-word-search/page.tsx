@@ -1,5 +1,6 @@
 import { AdSlot } from "@/components/AdSlot";
 import { DailyGame } from "@/components/DailyGame";
+import { GameSchema } from "@/components/Schema";
 import { ShareButton } from "@/components/ShareButton";
 import { getDailySeed, getDailyWords, getDateKey, getRecentDateKeys } from "@/lib/puzzle/daily";
 import { generatePuzzle } from "@/lib/puzzle/generator";
@@ -35,6 +36,12 @@ export default function DailyWordSearchPage() {
 
   return (
     <div className="page">
+      <GameSchema
+        name="Daily Word Search Puzzle"
+        description="Daily word search puzzle with a new free grid every day. Play online with no download, share the link, and explore previous puzzles."
+        url="/daily-word-search"
+        genre="Word Search Puzzle"
+      />
       <section className="hero hero-tool">
         <div className="reveal no-print">
           <span className="badge">Daily word search</span>

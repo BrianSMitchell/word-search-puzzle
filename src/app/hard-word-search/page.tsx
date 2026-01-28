@@ -1,4 +1,5 @@
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
+import { GameSchema } from "@/components/Schema";
 import { getDifficultyBySlug, getDifficultySeed } from "@/lib/puzzle/difficulties";
 import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
@@ -22,6 +23,13 @@ export default function HardWordSearchPage() {
 
   return (
     <div className="page">
+      <GameSchema
+        name="Hard Word Search Puzzle"
+        description="Play a hard word search puzzle online with diagonal and backwards words. Free to play, no download required."
+        url="/hard-word-search"
+        genre="Word Search Puzzle"
+        audience="Advanced Players"
+      />
       <section className="hero hero-tool">
         <div className="reveal">
           <span className="badge">Hard word search</span>
