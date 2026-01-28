@@ -1,5 +1,6 @@
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
 import { getDifficultyBySlug, getDifficultySeed } from "@/lib/puzzle/difficulties";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -9,6 +10,9 @@ export const metadata: Metadata = {
   title: "Easy Word Search Puzzle - Free Online Game",
   description:
     "Play an easy word search puzzle online. Short words, straight lines, and a beginner-friendly grid with no download.",
+  alternates: {
+    canonical: `${siteUrl}/easy-word-search`,
+  },
 };
 
 export default function EasyWordSearchPage() {

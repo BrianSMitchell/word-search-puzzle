@@ -1,6 +1,7 @@
 import { AdSlot } from "@/components/AdSlot";
 import { BreadcrumbSchema, GameSchema, HowToSchema } from "@/components/Schema";
 import { WordSearchGenerator } from "@/components/WordSearchGenerator";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -8,6 +9,9 @@ export const metadata: Metadata = {
   title: "Word Search Generator - Make Your Own Free Puzzle",
   description:
     "Create a free word search puzzle online. Add your word list, choose grid size and difficulty, and print instantly with no download.",
+  alternates: {
+    canonical: `${siteUrl}/word-search-generator`,
+  },
   openGraph: {
     title: "Word Search Generator - Make Your Own Free Puzzle",
     description: "Create custom word search puzzles instantly. Add your words, choose difficulty, print or play online.",

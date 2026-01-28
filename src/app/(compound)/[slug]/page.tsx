@@ -11,6 +11,7 @@ import {
 } from "@/lib/puzzle/compoundPages";
 import { getCommonFAQs } from "@/lib/puzzle/faqData";
 import { seedFromString } from "@/lib/puzzle/rng";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -36,6 +37,9 @@ export async function generateMetadata({ params }: CompoundPageProps): Promise<M
   return {
     title: `${page.title} – Free Online`,
     description: page.description,
+    alternates: {
+      canonical: `${siteUrl}/${slug}`,
+    },
     openGraph: {
       title: `${page.title} – Free Online`,
       description: page.description,

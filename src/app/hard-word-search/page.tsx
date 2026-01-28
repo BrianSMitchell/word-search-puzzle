@@ -1,5 +1,6 @@
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
 import { getDifficultyBySlug, getDifficultySeed } from "@/lib/puzzle/difficulties";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -9,6 +10,9 @@ export const metadata: Metadata = {
   title: "Hard Word Search Puzzle - Free Online Game",
   description:
     "Play a hard word search puzzle online with diagonal and backwards words. Free to play, no download required.",
+  alternates: {
+    canonical: `${siteUrl}/hard-word-search`,
+  },
 };
 
 export default function HardWordSearchPage() {

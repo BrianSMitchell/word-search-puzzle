@@ -1,5 +1,6 @@
 import { ThemeBuilderForm } from "@/components/ThemeBuilderForm";
 import { THEMED_PAGES, ThemeCategory } from "@/lib/puzzle/themedPages";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -7,6 +8,9 @@ export const metadata: Metadata = {
   title: "Themed Word Search Puzzles – Free & Printable Games",
   description:
     "Choose a themed word search puzzle, play instantly, and print worksheets for classrooms or family time. Each theme is built to rank with clear copy and internal links.",
+  alternates: {
+    canonical: `${siteUrl}/themed-word-search-puzzles`,
+  },
 };
 
 // Group themes by category with display info

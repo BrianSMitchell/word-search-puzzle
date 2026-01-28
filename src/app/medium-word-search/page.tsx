@@ -1,5 +1,6 @@
 import { PuzzlePlayer } from "@/components/PuzzlePlayer";
 import { getDifficultyBySlug, getDifficultySeed } from "@/lib/puzzle/difficulties";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -9,6 +10,9 @@ export const metadata: Metadata = {
   title: "Medium Word Search Puzzle - Free Online Game",
   description:
     "Play a medium word search puzzle online with diagonal words and a larger grid. Free and fast with no download.",
+  alternates: {
+    canonical: `${siteUrl}/medium-word-search`,
+  },
 };
 
 export default function MediumWordSearchPage() {

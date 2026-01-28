@@ -5,6 +5,7 @@ import { PrintButton } from "@/components/PrintButton";
 import { generatePuzzle } from "@/lib/puzzle/generator";
 import { seedFromString } from "@/lib/puzzle/rng";
 import { PRINTABLE_WORDS } from "@/lib/puzzle/words";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -12,6 +13,9 @@ export const metadata: Metadata = {
   title: "Printable Word Search Puzzles (Free PDFs)",
   description:
     "Printable word search puzzles for teachers, parents, and students. Free layouts, clean black-and-white grids, and no download required.",
+  alternates: {
+    canonical: `${siteUrl}/printable-word-search`,
+  },
 };
 
 const inlineSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_INLINE ?? "";

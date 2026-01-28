@@ -11,6 +11,7 @@ import {
   getThemedPageSeed,
   getThemedPageSlugs,
 } from "@/lib/puzzle/themedPages";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -36,6 +37,9 @@ export async function generateMetadata({ params }: ThemePageProps): Promise<Meta
   return {
     title: `${theme.title} – Free & Printable Online`,
     description: theme.description,
+    alternates: {
+      canonical: `${siteUrl}/themed-word-search-puzzles/${themeSlug}`,
+    },
     openGraph: {
       title: `${theme.title} – Free & Printable Online`,
       description: theme.description,

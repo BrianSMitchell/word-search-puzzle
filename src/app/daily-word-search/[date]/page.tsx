@@ -3,6 +3,7 @@ import { PuzzleBoard } from "@/components/PuzzleBoard";
 import { ShareButton } from "@/components/ShareButton";
 import { getDailySeed, getDailyWords, getRecentDateKeys } from "@/lib/puzzle/daily";
 import { generatePuzzle } from "@/lib/puzzle/generator";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -35,7 +36,12 @@ export async function generateMetadata({ params }: DailyPageProps): Promise<Meta
   if (!isValidDateKey(date)) {
     return { title: "Daily Word Search Puzzle" };
   }
-  return { title: `Daily Word Search Puzzle - ${date}` };
+  return {
+    title: `Daily Word Search Puzzle - ${date}`,
+    alternates: {
+      canonical: `${siteUrl}/daily-word-search/${date}`,
+    },
+  };
 }
 
 export default async function DailyPage({ params }: DailyPageProps) {

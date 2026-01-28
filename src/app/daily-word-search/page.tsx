@@ -3,6 +3,7 @@ import { DailyGame } from "@/components/DailyGame";
 import { ShareButton } from "@/components/ShareButton";
 import { getDailySeed, getDailyWords, getDateKey, getRecentDateKeys } from "@/lib/puzzle/daily";
 import { generatePuzzle } from "@/lib/puzzle/generator";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -10,6 +11,9 @@ export const metadata: Metadata = {
   title: "Daily Word Search Puzzle - New Free Puzzle Every Day",
   description:
     "Daily word search puzzle with a new free grid every day. Play online with no download, share the link, and explore previous puzzles.",
+  alternates: {
+    canonical: `${siteUrl}/daily-word-search`,
+  },
 };
 
 export const revalidate = 3600;

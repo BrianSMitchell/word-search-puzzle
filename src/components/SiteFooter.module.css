@@ -36,10 +36,36 @@
   opacity: 1;
 }
 
-.meta {
+.bottom {
   margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.meta {
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+.legal {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.legal a {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.legal a:hover {
+  color: var(--text);
+}
+
+.copyright {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.8rem;
 }
 
 @media (min-width: 860px) {

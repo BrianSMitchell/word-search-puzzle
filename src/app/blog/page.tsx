@@ -1,4 +1,5 @@
 import { getAllPosts } from "@/lib/blog";
+import { siteUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -6,6 +7,9 @@ export const metadata: Metadata = {
   title: "Blog - Word Search Puzzle Insights",
   description:
     "Articles, tips, and insights about word search puzzles, education, and brain health.",
+  alternates: {
+    canonical: `${siteUrl}/blog`,
+  },
 };
 
 export default function BlogIndexPage() {

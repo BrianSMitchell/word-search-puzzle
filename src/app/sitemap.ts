@@ -17,6 +17,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/word-search-generator",
     "/printable-word-search",
     "/blog",
+    "/privacy",
+    "/terms",
   ];
 
   const dailyRoutes = getRecentDateKeys(30).map((date) => ({

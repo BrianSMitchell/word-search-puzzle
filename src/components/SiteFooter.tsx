@@ -11,7 +11,8 @@ export function SiteFooter() {
           <div>
             <div className={styles.logo}>Word Search Puzzle</div>
             <p className={styles.tagline}>
-              Free, fast, and made for daily play. No download required.
+              Free printable word search puzzles for all ages. Play online, print
+              worksheets, or create your own — no download required.
             </p>
           </div>
           <nav className={styles.nav} aria-label="Footer">
@@ -23,9 +24,18 @@ export function SiteFooter() {
             <Link onClick={() => window.scrollTo(0, 0)} href="/blog">Blog</Link>
           </nav>
         </div>
-        <p className={styles.meta}>
-          Built for puzzle fans, teachers, and quick brain breaks.
-        </p>
+        <div className={styles.bottom}>
+          <p className={styles.meta}>
+            Built for puzzle fans, teachers, and quick brain breaks.
+          </p>
+          <nav className={styles.legal} aria-label="Legal">
+            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/terms">Terms of Service</Link>
+          </nav>
+          <p className={styles.copyright}>
+            © 2026 Word Search Puzzle. All rights reserved.
+          </p>
+        </div>
       </div>
     </footer>
   );
