@@ -31,7 +31,7 @@ jobs:
 
       - name: Generate Blog Post
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
         run: |
           cd scripts
           npx tsx daily-blog.ts

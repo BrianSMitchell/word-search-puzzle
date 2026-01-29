@@ -33,7 +33,7 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           NOTIFICATION_EMAIL: calmncollect@gmail.com
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,15 +1,15 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
 
 // ─── Configuration ───────────────────────────────────────────────────────────
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY!;
-if (!ANTHROPIC_API_KEY) {
-  console.error("❌ ANTHROPIC_API_KEY is missing");
+const MOONSHOT_API_KEY = process.env.MOONSHOT_API_KEY!;
+if (!MOONSHOT_API_KEY) {
+  console.error("❌ MOONSHOT_API_KEY is missing");
   process.exit(1);
 }
 
-const anthropic = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+const openai = new OpenAI({ apiKey: MOONSHOT_API_KEY, baseURL: "https://api.moonshot.ai/v1" });
 const BLOG_DIR = path.join(process.cwd(), "..", "src", "content", "blog");
 
 // Ensure blog directory exists
@@ -52,16 +52,18 @@ Categories to rotate through:
 Please suggest exactly ONE topic idea. Return ONLY the topic title/headline.
 `;
 
-  const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+  const response = await openai.chat.completions.create({
+    model: "kimi-k2.5-preview",
     max_tokens: 100,
-    messages: [{ role: "user", content: prompt }],
-    system: SYSTEM_PROMPT,
+    messages: [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: prompt },
+    ],
   });
 
-  const content = response.content[0];
-  if (content.type === "text") {
-    return content.text.trim().replace(/^"|"$/g, "");
+  const content = response.choices[0]?.message?.content;
+  if (content) {
+    return content.trim().replace(/^"|"$/g, "");
   }
   throw new Error("Failed to generate topic");
 }
@@ -93,23 +95,24 @@ tags: ["Tag1", "Tag2"]
 Do not include any other text before or after the markdown.
 `;
 
-  const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+  const response = await openai.chat.completions.create({
+    model: "kimi-k2.5-preview",
     max_tokens: 2000,
-    messages: [{ role: "user", content: prompt }],
-    system: SYSTEM_PROMPT,
+    messages: [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: prompt },
+    ],
   });
 
-  const content = response.content[0];
-  if (content.type === "text") {
+  const content = response.choices[0]?.message?.content;
+  if (content) {
     // Ensure we get clean date
     const today = new Date().toISOString().split("T")[0];
-    let text = content.text;
+    let text = content;
     
     // Force date correction if LLM hallucinates a date
     text = text.replace(/date: ".*?"/, `date: "${today}"`);
     return text;
-  }
   throw new Error("Failed to generate content");
 }
 
