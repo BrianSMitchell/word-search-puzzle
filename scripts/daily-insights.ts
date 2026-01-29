@@ -295,17 +295,20 @@ Keep the entire response under 200 words. Be specific and actionable.`;
 
   const response = await openai.chat.completions.create({
     model: "kimi-k2.5",
-    max_tokens: 500,
+    max_tokens: 4096,
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: userPrompt },
     ],
-  });
+  } as any);
 
-  const content = response.choices[0]?.message?.content;
+  const message = response.choices[0]?.message;
+  const content = message?.content;
   if (content) {
     return content;
   }
+  // Log the full response for debugging
+  console.error("Full API response:", JSON.stringify(response.choices[0], null, 2));
   throw new Error("Unexpected response format from Kimi");
 }
 
