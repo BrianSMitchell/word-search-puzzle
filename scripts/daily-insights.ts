@@ -294,7 +294,7 @@ Format your response as:
 Keep the entire response under 200 words. Be specific and actionable.`;
 
   const response = await openai.chat.completions.create({
-    model: "kimi-k2.5-preview",
+    model: "kimi-k2.5",
     max_tokens: 500,
     messages: [
       { role: "system", content: systemPrompt },

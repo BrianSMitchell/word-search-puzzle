@@ -53,7 +53,7 @@ Please suggest exactly ONE topic idea. Return ONLY the topic title/headline.
 `;
 
   const response = await openai.chat.completions.create({
-    model: "kimi-k2.5-preview",
+    model: "kimi-k2.5",
     max_tokens: 100,
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
@@ -96,7 +96,7 @@ Do not include any other text before or after the markdown.
 `;
 
   const response = await openai.chat.completions.create({
-    model: "kimi-k2.5-preview",
+    model: "kimi-k2.5",
     max_tokens: 2000,
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
