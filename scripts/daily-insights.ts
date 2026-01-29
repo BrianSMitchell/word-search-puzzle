@@ -302,13 +302,10 @@ Keep the entire response under 200 words. Be specific and actionable.`;
     ],
   } as any);
 
-  const message = response.choices[0]?.message;
-  const content = message?.content;
+  const content = response.choices[0]?.message?.content;
   if (content) {
     return content;
   }
-  // Log the full response for debugging
-  console.error("Full API response:", JSON.stringify(response.choices[0], null, 2));
   throw new Error("Unexpected response format from Kimi");
 }
 
